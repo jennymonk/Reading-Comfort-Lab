@@ -82,7 +82,7 @@ body{
 }
 
 .container{
-  max-width:980px;
+  max-width:1080px;
   margin:auto;
   background:var(--card);
   padding:40px;
@@ -109,7 +109,7 @@ h1{
 .intro{
   color:var(--muted);
   margin-bottom:30px;
-  max-width:760px;
+  max-width:820px;
 }
 
 .preset-grid{
@@ -150,7 +150,7 @@ h1{
 
 .controls-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
   gap:20px;
 }
 
@@ -201,10 +201,11 @@ input[type="color"]{
 }
 
 #readingText{
-  width:720px;
+  width:860px;
   max-width:100%;
-  padding:28px;
-  border-radius:14px;
+  min-height:340px;
+  padding:34px;
+  border-radius:16px;
   border:1px solid #ddd;
   font-size:20px;
   line-height:1.6;
@@ -214,18 +215,19 @@ input[type="color"]{
 }
 
 .actions{
-  margin-top:24px;
+  margin-top:28px;
   display:flex;
-  gap:14px;
+  justify-content:center;
+  gap:16px;
   flex-wrap:wrap;
 }
 
 button{
-  padding:14px 18px;
-  font-size:17px;
+  padding:16px 26px;
+  font-size:20px;
   cursor:pointer;
   border:none;
-  border-radius:12px;
+  border-radius:14px;
   background:var(--accent);
   color:white;
   font-weight:700;
@@ -236,6 +238,11 @@ button{
 button:hover{
   background:#2e47b8;
   transform:translateY(-1px);
+}
+
+.primary-large{
+  min-width:320px;
+  text-align:center;
 }
 
 .secondary{
@@ -249,8 +256,8 @@ button:hover{
 }
 
 .profileBox{
-  margin-top:24px;
-  padding:22px;
+  margin-top:28px;
+  padding:24px;
   background:var(--accent-soft);
   border:1px solid #d8e3ff;
   border-radius:16px;
@@ -258,7 +265,7 @@ button:hover{
 }
 
 .profileBox h2{
-  font-size:24px;
+  font-size:28px;
   margin:0 0 14px 0;
 }
 
@@ -270,9 +277,10 @@ button:hover{
   background:#ffffff;
   border:1px solid #d6def3;
   border-radius:12px;
-  padding:16px;
+  padding:18px;
   margin-top:14px;
   line-height:1.8;
+  font-size:19px;
 }
 
 .small-note{
@@ -318,11 +326,16 @@ button:hover{
 
   #readingText{
     font-size:18px;
-    padding:22px;
+    padding:24px;
+    min-height:280px;
   }
 
   button{
     width:100%;
+  }
+
+  .primary-large{
+    min-width:0;
   }
 }
 </style>
@@ -350,19 +363,29 @@ button:hover{
     <h1>Reading Comfort Tool</h1>
 
     <p class="intro">
-      Use the controls below to explore different fonts, spacing, colours and line widths. The aim is not to find a universal best setting, but to discover what feels most comfortable for you.
+      Use the controls below to explore different fonts, spacing, colours, line widths and sample texts. The aim is to discover what feels most comfortable for you or the person using the tool.
     </p>
 
     <div class="preset-grid">
-      <div class="preset" style="background:#fff8dc" onclick="applyPreset('Arial',20,1.6,'#333333','#fff8dc',720)">Classic Calm</div>
-      <div class="preset" style="background:#f0f7ff" onclick="applyPreset('Verdana',20,1.7,'#222222','#f0f7ff',700)">Wide & Clear</div>
-      <div class="preset" style="background:#f3f3f3" onclick="applyPreset('Segoe UI',20,1.6,'#333333','#f3f3f3',740)">Soft Contrast</div>
-      <div class="preset" style="background:#fff5f5" onclick="applyPreset('Georgia',20,1.7,'#222222','#fff5f5',680)">Book Style</div>
-      <div class="preset" style="background:#eef7f3" onclick="applyPreset('Tahoma',20,1.6,'#222222','#eef7f3',760)">Screen Easy</div>
+      <div class="preset" style="background:#fff8dc" onclick="applyPreset('Arial',20,1.6,'#333333','#fff8dc',860)">Classic Calm</div>
+      <div class="preset" style="background:#f0f7ff" onclick="applyPreset('Verdana',20,1.7,'#222222','#f0f7ff',820)">Wide & Clear</div>
+      <div class="preset" style="background:#f3f3f3" onclick="applyPreset('Segoe UI',20,1.6,'#333333','#f3f3f3',880)">Soft Contrast</div>
+      <div class="preset" style="background:#fff5f5" onclick="applyPreset('Georgia',20,1.7,'#222222','#fff5f5',780)">Book Style</div>
+      <div class="preset" style="background:#eef7f3" onclick="applyPreset('Tahoma',20,1.6,'#222222','#eef7f3',900)">Screen Easy</div>
     </div>
 
     <div class="controls-panel">
       <div class="controls-grid">
+
+        <div class="control-group">
+          <label for="sampleText">Text sample</label>
+          <select id="sampleText">
+            <option value="general">General reading sample</option>
+            <option value="child">Children’s story</option>
+            <option value="teen">Teen reading sample</option>
+            <option value="adult">Adult information sample</option>
+          </select>
+        </div>
 
         <div class="control-group">
           <label for="fontSelect">Font</label>
@@ -394,8 +417,8 @@ button:hover{
         </div>
 
         <div class="control-group">
-          <label for="lineWidth">Line width <span class="control-value" id="lineWidthValue">720px</span></label>
-          <input type="range" id="lineWidth" min="480" max="900" step="20" value="720">
+          <label for="lineWidth">Line width <span class="control-value" id="lineWidthValue">860px</span></label>
+          <input type="range" id="lineWidth" min="520" max="960" step="20" value="860">
         </div>
 
         <div class="control-group">
@@ -418,7 +441,7 @@ button:hover{
     </div>
 
     <div class="actions">
-      <button onclick="generateProfile()">Generate my reading profile</button>
+      <button class="primary-large" onclick="generateProfile()">Generate My Reading Profile</button>
       <button class="secondary" onclick="copyProfile()">Copy profile text</button>
     </div>
 
@@ -434,6 +457,7 @@ button:hover{
 <script>
 const text = document.getElementById("readingText");
 
+const sampleText = document.getElementById("sampleText");
 const fontSelect = document.getElementById("fontSelect");
 const fontSize = document.getElementById("fontSize");
 const lineSpacing = document.getElementById("lineSpacing");
@@ -446,6 +470,24 @@ const lineSpacingValue = document.getElementById("lineSpacingValue");
 const lineWidthValue = document.getElementById("lineWidthValue");
 
 let lastProfileText = "";
+
+const sampleTexts = {
+  general: "Reading is a highly individual experience. The way text is presented can influence how comfortable it feels to read for extended periods. Some readers prefer wider spacing between lines, while others find certain fonts easier to follow. Background colour and contrast can also affect visual comfort. Line width can matter too. Some people prefer shorter lines that feel easier to track, while others prefer a wider reading area. Use the controls above to experiment with different settings and discover what works best for you.",
+
+  child: "Ben had a small brown dog called Pip. Every morning, Pip waited by the front door with his tail wagging fast. One sunny day, Ben clipped on Pip’s lead and they walked to the park. Pip sniffed the grass, chased a bouncing ball and splashed in a muddy puddle. On the way home, Ben laughed as Pip shook water all over his shoes. Pip looked proud of himself. By the time they got back, both of them were tired, muddy and very happy.",
+
+  teen: "Maya had not planned to stay late after school, but the library was quiet and she needed somewhere calm to think. She opened her notebook, read over her ideas and realised that the project finally made sense. What had felt messy in her head now looked more manageable on the page. She changed the heading, moved a few paragraphs around and kept going. By the time she packed her bag, she felt lighter. Sometimes the hardest part was simply finding a way to begin.",
+
+  adult: "Comfortable reading is influenced by more than content alone. Layout, font choice, spacing, contrast and line length can all change how effortful text feels over time. A style that feels clear and calm for one reader may feel visually tiring for another. This is why flexible presentation matters. Testing small adjustments can help someone identify a format that feels easier to manage in everyday settings such as work, study or home reading."
+};
+
+function updateSampleText() {
+  text.textContent = sampleTexts[sampleText.value];
+}
+
+sampleText.onchange = function(){
+  updateSampleText();
+};
 
 fontSelect.onchange = function(){
   text.style.fontFamily = this.value;
@@ -495,6 +537,7 @@ function applyPreset(font, size, line, color, bg, width){
 }
 
 function getProfileText(){
+  const sample = sampleText.options[sampleText.selectedIndex].text;
   const font = fontSelect.value;
   const size = fontSize.value + "px";
   const spacing = lineSpacing.value;
@@ -504,6 +547,7 @@ function getProfileText(){
 
   return (
     "Your Reading Profile\n\n" +
+    "Text sample: " + sample + "\n" +
     "Font: " + font + "\n" +
     "Font size: " + size + "\n" +
     "Line spacing: " + spacing + "\n" +
@@ -516,6 +560,7 @@ function getProfileText(){
 
 function generateProfile(){
   const box = document.getElementById("profileBox");
+  const sample = sampleText.options[sampleText.selectedIndex].text;
   const font = fontSelect.value;
   const size = fontSize.value + "px";
   const spacing = lineSpacing.value;
@@ -530,6 +575,7 @@ function generateProfile(){
     "<h2>Your Reading Profile</h2>" +
     "<p>This is the combination you have currently selected.</p>" +
     "<div class='profile-summary'>" +
+    "<strong>Text sample:</strong> " + sample + "<br>" +
     "<strong>Font:</strong> " + font + "<br>" +
     "<strong>Font size:</strong> " + size + "<br>" +
     "<strong>Line spacing:</strong> " + spacing + "<br>" +
@@ -552,6 +598,9 @@ async function copyProfile(){
     alert("Copy did not work in this browser. Please generate the profile and copy it manually.");
   }
 }
+
+updateSampleText();
+applyPreset('Arial',20,1.6,'#333333','#fff8dc',860);
 </script>
 
 </body>
