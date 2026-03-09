@@ -39,14 +39,13 @@ body{
   position:fixed;
   inset:0;
   background:#fff8dc;
-  opacity:0;
+  opacity:0.5;
   pointer-events:none;
-  z-index:1;
+  z-index:999;
 }
 
 #pageFilterWrap{
   position:relative;
-  z-index:2;
   min-height:100vh;
   filter:brightness(100%) contrast(100%);
 }
@@ -175,7 +174,6 @@ body{
 
 select,
 input[type="range"],
-input[type="color"],
 textarea{
   width:100%;
 }
@@ -192,12 +190,34 @@ input[type="range"]{
   accent-color:var(--accent);
 }
 
-input[type="color"]{
-  height:44px;
+.color-picker-wrap{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.color-picker-wrap input[type="color"]{
+  width:72px;
+  height:54px;
+  min-width:72px;
   border:none;
   background:transparent;
   padding:0;
   cursor:pointer;
+  border-radius:12px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
+
+.color-picker-tip{
+  font-size:15px;
+  color:var(--muted);
+  line-height:1.5;
+}
+
+.color-picker-tip strong{
+  display:block;
+  color:var(--text);
+  font-size:15px;
 }
 
 #customTextWrap{
@@ -394,6 +414,11 @@ button:hover{
   button{
     width:100%;
   }
+
+  .color-picker-wrap{
+    align-items:flex-start;
+    flex-direction:column;
+  }
 }
 </style>
 </head>
@@ -489,23 +514,41 @@ button:hover{
             </div>
 
             <div class="control-group">
-              <label for="textColor">Text colour</label>
-              <input type="color" id="textColor" value="#333333">
+              <label>Text colour</label>
+              <div class="color-picker-wrap">
+                <input type="color" id="textColor" value="#333333">
+                <div class="color-picker-tip">
+                  <strong>Click the colour box</strong>
+                  to open more colour choices.
+                </div>
+              </div>
             </div>
 
             <div class="control-group">
-              <label for="bgColor">Reading page colour</label>
-              <input type="color" id="bgColor" value="#fff8dc">
+              <label>Reading page colour</label>
+              <div class="color-picker-wrap">
+                <input type="color" id="bgColor" value="#fff8dc">
+                <div class="color-picker-tip">
+                  <strong>Click the colour box</strong>
+                  to choose the page background colour.
+                </div>
+              </div>
             </div>
 
             <div class="control-group">
-              <label for="overlayColor">Whole-screen overlay colour</label>
-              <input type="color" id="overlayColor" value="#fff8dc">
+              <label>Whole-screen overlay colour</label>
+              <div class="color-picker-wrap">
+                <input type="color" id="overlayColor" value="#fff8dc">
+                <div class="color-picker-tip">
+                  <strong>Click the colour box</strong>
+                  to tint the whole visible screen.
+                </div>
+              </div>
             </div>
 
             <div class="control-group">
-              <label for="overlayStrength">Overlay strength <span class="control-value" id="overlayStrengthValue">0%</span></label>
-              <input type="range" id="overlayStrength" min="0" max="100" value="0">
+              <label for="overlayStrength">Overlay strength <span class="control-value" id="overlayStrengthValue">50%</span></label>
+              <input type="range" id="overlayStrength" min="0" max="100" value="50">
             </div>
 
             <div class="control-group">
@@ -521,11 +564,11 @@ button:hover{
           </div>
 
           <div class="preset-row">
-            <button type="button" class="overlay-preset" style="background:#fff8dc;" onclick="setOverlayPreset('#fff8dc', 25)">Cream overlay</button>
-            <button type="button" class="overlay-preset" style="background:#f0f7ff;" onclick="setOverlayPreset('#f0f7ff', 25)">Soft blue overlay</button>
-            <button type="button" class="overlay-preset" style="background:#eef7f3;" onclick="setOverlayPreset('#eef7f3', 25)">Pale green overlay</button>
-            <button type="button" class="overlay-preset" style="background:#f3f3f3;" onclick="setOverlayPreset('#f3f3f3', 20)">Light grey overlay</button>
-            <button type="button" class="overlay-preset" style="background:#fff5f5;" onclick="setOverlayPreset('#fff5f5', 20)">Soft pink overlay</button>
+            <button type="button" class="overlay-preset" style="background:#fff8dc;" onclick="setOverlayPreset('#fff8dc', 50)">Cream overlay</button>
+            <button type="button" class="overlay-preset" style="background:#f0f7ff;" onclick="setOverlayPreset('#f0f7ff', 50)">Soft blue overlay</button>
+            <button type="button" class="overlay-preset" style="background:#eef7f3;" onclick="setOverlayPreset('#eef7f3', 50)">Pale green overlay</button>
+            <button type="button" class="overlay-preset" style="background:#f3f3f3;" onclick="setOverlayPreset('#f3f3f3', 45)">Light grey overlay</button>
+            <button type="button" class="overlay-preset" style="background:#fff5f5;" onclick="setOverlayPreset('#fff5f5', 45)">Soft pink overlay</button>
             <button type="button" class="overlay-preset reset-preset" onclick="setOverlayPreset('#fff8dc', 0)">No overlay</button>
           </div>
 
@@ -669,7 +712,7 @@ function resetViewSettings() {
   textColor.value = "#333333";
   bgColor.value = "#fff8dc";
   overlayColor.value = "#fff8dc";
-  overlayStrength.value = 0;
+  overlayStrength.value = 50;
   brightness.value = 100;
   contrast.value = 100;
   updateViewSettings();
@@ -785,6 +828,7 @@ loadSettingsFromTool();
 toggleCustomTextArea();
 updateDisplayedText();
 updateViewSettings();
+updateOverlay();
 </script>
 
 </body>
