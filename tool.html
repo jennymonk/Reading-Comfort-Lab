@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reading Comfort Tool</title>
+
+<style>
+
+body{
+font-family:Arial, Verdana, sans-serif;
+background:#f4f6f9;
+margin:0;
+padding:40px;
+font-size:20px;
+line-height:1.8;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:40px;
+border-radius:12px;
+box-shadow:0 12px 30px rgba(0,0,0,0.08);
+}
+
+h1{
+font-size:36px;
+margin-top:0;
+}
+
+.backlink{
+margin-bottom:25px;
+display:inline-block;
+text-decoration:none;
+font-weight:bold;
+color:#3657d6;
+}
+
+.intro{
+color:#444;
+margin-bottom:30px;
+}
+
+.preset-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+gap:15px;
+margin-bottom:30px;
+}
+
+.preset{
+padding:22px;
+border-radius:8px;
+cursor:pointer;
+font-weight:bold;
+text-align:center;
+transition:0.2s;
+border:2px solid transparent;
+}
+
+.preset:hover{
+transform:scale(1.05);
+border-color:#888;
+}
+
+.controls label{
+display:block;
+margin-top:16px;
+font-weight:bold;
+}
+
+#readingText{
+margin-top:30px;
+padding:26px;
+border-radius:6px;
+border:1px solid #ddd;
+font-size:20px;
+line-height:1.6;
+background:#fff8dc;
+color:#333;
+}
+
+.profileBox{
+margin-top:25px;
+padding:20px;
+background:#eef3ff;
+border-radius:6px;
+display:none;
+}
+
+button{
+margin-top:20px;
+padding:12px 18px;
+font-size:16px;
+cursor:pointer;
+border:none;
+background:#3657d6;
+color:white;
+border-radius:6px;
+}
+
+button:hover{
+background:#2e47b8;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<a href="index.html" class="backlink">← Back to Reading Comfort Lab</a>
+
+<h1>Reading Comfort Tool</h1>
+
+<p class="intro">
+Use the controls below to experiment with different fonts, spacing and colour combinations. 
+There is no single correct setting. The aim is simply to explore what feels most comfortable for you.
+</p>
+
+<div class="preset-grid">
+
+<div class="preset" style="background:#fff8dc"
+onclick="applyPreset('Arial',20,1.6,'#333','#fff8dc')">
+Classic Calm
+</div>
+
+<div class="preset" style="background:#f0f7ff"
+onclick="applyPreset('Verdana',20,1.7,'#222','#f0f7ff')">
+Wide & Clear
+</div>
+
+<div class="preset" style="background:#f3f3f3"
+onclick="applyPreset('Segoe UI',20,1.6,'#333','#f3f3f3')">
+Soft Contrast
+</div>
+
+<div class="preset" style="background:#fff5f5"
+onclick="applyPreset('Georgia',20,1.7,'#222','#fff5f5')">
+Book Style
+</div>
+
+<div class="preset" style="background:#eef7f3"
+onclick="applyPreset('Tahoma',20,1.6,'#222','#eef7f3')">
+Screen Easy
+</div>
+
+</div>
+
+<div class="controls">
+
+<label>Font</label>
+
+<select id="fontSelect">
+<option>Arial</option>
+<option>Verdana</option>
+<option>Tahoma</option>
+<option>Trebuchet MS</option>
+<option>Calibri</option>
+<option>Segoe UI</option>
+<option>Bahnschrift</option>
+<option>Candara</option>
+<option>Georgia</option>
+<option>Cambria</option>
+<option>Constantia</option>
+<option>Palatino Linotype</option>
+<option>Times New Roman</option>
+</select>
+
+<label>Font Size</label>
+<input type="range" id="fontSize" min="16" max="36" value="20">
+
+<label>Line Spacing</label>
+<input type="range" id="lineSpacing" min="1.2" max="2" step="0.1" value="1.6">
+
+<label>Text Colour</label>
+<input type="color" id="textColor" value="#333333">
+
+<label>Background Colour</label>
+<input type="color" id="bgColor" value="#fff8dc">
+
+</div>
+
+<div id="readingText">
+
+Reading is a highly individual experience. The way text is presented can influence how comfortable it feels to read for extended periods. Some readers prefer wider spacing between lines, while others find certain fonts easier to follow. Background colour and contrast can also affect visual comfort. Use the controls above to experiment with different settings and discover what works best for you.
+
+</div>
+
+<button onclick="generateProfile()">Generate my reading profile</button>
+
+<div id="profileBox" class="profileBox"></div>
+
+</div>
+
+<script>
+
+const text=document.getElementById("readingText")
+
+document.getElementById("fontSelect").onchange=function(){
+text.style.fontFamily=this.value
+}
+
+document.getElementById("fontSize").oninput=function(){
+text.style.fontSize=this.value+"px"
+}
+
+document.getElementById("lineSpacing").oninput=function(){
+text.style.lineHeight=this.value
+}
+
+document.getElementById("textColor").oninput=function(){
+text.style.color=this.value
+}
+
+document.getElementById("bgColor").oninput=function(){
+text.style.backgroundColor=this.value
+}
+
+function applyPreset(font,size,line,color,bg){
+
+text.style.fontFamily=font
+text.style.fontSize=size+"px"
+text.style.lineHeight=line
+text.style.color=color
+text.style.backgroundColor=bg
+
+document.getElementById("fontSelect").value=font
+document.getElementById("fontSize").value=size
+document.getElementById("lineSpacing").value=line
+document.getElementById("textColor").value=color
+document.getElementById("bgColor").value=bg
+
+}
+
+function generateProfile(){
+
+let font=document.getElementById("fontSelect").value
+let size=document.getElementById("fontSize").value
+let spacing=document.getElementById("lineSpacing").value
+let color=document.getElementById("textColor").value
+let bg=document.getElementById("bgColor").value
+
+let box=document.getElementById("profileBox")
+
+box.style.display="block"
+
+box.innerHTML=
+"<strong>Your Reading Profile</strong><br><br>"+
+"Font: "+font+"<br>"+
+"Font size: "+size+"px<br>"+
+"Line spacing: "+spacing+"<br>"+
+"Text colour: "+color+"<br>"+
+"Background colour: "+bg+"<br><br>"+
+"You can use these settings in tools like Microsoft Word, Google Docs, or browser reader modes."
+
+}
+
+</script>
+
+</body>
+</html>
