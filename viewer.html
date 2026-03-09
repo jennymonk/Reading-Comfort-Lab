@@ -355,6 +355,44 @@ button:hover{
   font-size:16px;
 }
 
+.reading-area{
+  position:relative;
+}
+
+.hover-tools{
+  position:absolute;
+  top:14px;
+  right:14px;
+  z-index:10;
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  opacity:0;
+  transform:translateY(-4px);
+  transition:opacity 0.15s ease, transform 0.15s ease;
+}
+
+.reading-area:hover .hover-tools{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.tool-chip{
+  border:none;
+  border-radius:999px;
+  padding:8px 12px;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+  background:rgba(35,55,111,0.92);
+  color:#ffffff;
+  box-shadow:0 8px 18px rgba(0,0,0,0.18);
+}
+
+.tool-chip:hover{
+  background:#1f315f;
+}
+
 #readingPage{
   width:100%;
   min-height:78vh;
@@ -367,6 +405,44 @@ button:hover{
   font-size:20px;
   line-height:1.6;
   box-shadow:inset 0 1px 0 rgba(255,255,255,0.6);
+  overflow:auto;
+}
+
+#readingPage h2{
+  margin-top:0;
+  margin-bottom:16px;
+  font-size:1.4em;
+  line-height:1.3;
+}
+
+#readingPage p{
+  margin:0 0 18px 0;
+}
+
+#readingPage img{
+  max-width:100%;
+  height:auto;
+  border-radius:10px;
+  display:block;
+  margin:18px auto;
+}
+
+#readingPage table{
+  width:100%;
+  border-collapse:collapse;
+  margin:18px 0;
+  background:#ffffff;
+}
+
+#readingPage th,
+#readingPage td{
+  border:1px solid #cfd8e3;
+  padding:10px 12px;
+  text-align:left;
+}
+
+#readingPage th{
+  background:#f3f7fb;
 }
 
 .profileBox{
@@ -472,6 +548,13 @@ button:hover{
     transform:none;
     width:220px;
   }
+
+  .hover-tools{
+    position:static;
+    opacity:1;
+    transform:none;
+    margin-bottom:12px;
+  }
 }
 </style>
 </head>
@@ -515,7 +598,8 @@ button:hover{
               </label>
               <select id="sampleText">
                 <option value="general">General reading sample</option>
-                <option value="child">Children’s story</option>
+                <option value="child6">Story for ages 6 to 7</option>
+                <option value="child9">Story for ages 8 to 9</option>
                 <option value="teen">Teen reading sample</option>
                 <option value="adult">Adult information sample</option>
                 <option value="custom">My own text</option>
@@ -662,8 +746,15 @@ button:hover{
           <div class="viewer-note">Your text and display settings update here live</div>
         </div>
 
-        <div id="readingPage">
-          Reading is a highly individual experience. The way text is presented can influence how comfortable it feels to read for extended periods. Some readers prefer wider spacing between lines, while others find certain fonts easier to follow. Background colour and contrast can also affect visual comfort. This page is designed to help you view text in a more realistic, full-page format so you can judge how it feels over time.
+        <div class="reading-area">
+          <div class="hover-tools">
+            <button type="button" class="tool-chip" onclick="toggleEditMode()">Edit text</button>
+            <button type="button" class="tool-chip" onclick="insertImage()">Insert image</button>
+            <button type="button" class="tool-chip" onclick="insertTable()">Insert table</button>
+            <button type="button" class="tool-chip" onclick="restoreSampleContent()">Reset box content</button>
+          </div>
+
+          <div id="readingPage" contenteditable="false"></div>
         </div>
 
         <div class="actions">
@@ -720,12 +811,34 @@ const bgColorName = document.getElementById("bgColorName");
 const overlayColorName = document.getElementById("overlayColorName");
 
 let lastViewerProfileText = "";
+let isEditing = false;
 
 const sampleTexts = {
-  general: "Reading is a highly individual experience. The way text is presented can influence how comfortable it feels to read for extended periods. Some readers prefer wider spacing between lines, while others find certain fonts easier to follow. Background colour and contrast can also affect visual comfort. This page is designed to help you view text in a more realistic, full-page format so you can judge how it feels over time.",
-  child: "Ben had a small brown dog called Pip. Every morning, Pip waited by the front door with his tail wagging fast. One sunny day, Ben clipped on Pip’s lead and they walked to the park. Pip sniffed the grass, chased a bouncing ball and splashed in a muddy puddle. On the way home, Ben laughed as Pip shook water all over his shoes. Pip looked proud of himself. By the time they got back, both of them were tired, muddy and very happy.",
-  teen: "Maya had not planned to stay late after school, but the library was quiet and she needed somewhere calm to think. She opened her notebook, read over her ideas and realised that the project finally made sense. What had felt messy in her head now looked more manageable on the page. She changed the heading, moved a few paragraphs around and kept going. By the time she packed her bag, she felt lighter. Sometimes the hardest part was simply finding a way to begin.",
-  adult: "Comfortable reading is influenced by more than content alone. Layout, font choice, spacing, contrast and line length can all change how effortful text feels over time. A style that feels clear and calm for one reader may feel visually tiring for another. This is why flexible presentation matters. Testing small adjustments can help someone identify a format that feels easier to manage in everyday settings such as work, study or home reading."
+  general: `
+    <h2>Finding a Comfortable Reading Style</h2>
+    <p><strong>Reading comfort</strong> can be shaped by lots of small design choices. A page that feels calm and easy to follow for one reader may feel cluttered or tiring for someone else. Font style, spacing, colour, contrast and layout can all influence how manageable a page feels when you read it for more than a few minutes.</p>
+    <p>This example view is designed to feel more like a real website or reading app. It includes a title, paragraph text, and a little variation in style, such as <em>italics</em> and <strong>bold text</strong>, so you can judge how a fuller page looks rather than only a short plain passage.</p>
+  `,
+  child6: `
+    <h2>The Lost Kite</h2>
+    <p>Sam had a bright red kite. He liked to run with it in the park when the wind was soft and steady. One morning, the kite flew up high, twisted in the air, and slipped from his hands. Sam stopped, looked up, and felt his tummy drop. The kite was gone.</p>
+    <p>He walked past the bench, the big tree, and the flower bed. Then he saw a flash of red near the gate. It was his kite. A kind woman smiled and gave it back. Sam held it tight and grinned. “Next time,” he said, “I will hold on with both hands.”</p>
+  `,
+  child9: `
+    <h2>A Small Surprise in the Garden</h2>
+    <p>Leila went into the garden to water the plants before tea. She liked that quiet time at the end of the day, when the light turned soft and the air felt cool. As she tipped water onto the soil, she noticed something moving near the strawberries. At first she thought it was a leaf, but then it curled into a tiny brown ball.</p>
+    <p>It was a hedgehog. Leila stood very still and watched. After a moment, it uncurled and began to sniff the ground with its pointed nose. She felt excited, but also careful. She ran inside to tell her dad, who reminded her to keep the garden quiet and let the hedgehog find its own way. That evening, Leila looked out of the window three times, hoping to see it again.</p>
+  `,
+  teen: `
+    <h2>After the Bell</h2>
+    <p>Maya had not planned to stay late after school, but the library was quiet and she needed somewhere calm to think. She opened her notebook, read over her ideas and realised that the project finally made sense. What had felt messy in her head now looked more manageable on the page. She changed the heading, moved a few paragraphs around and kept going.</p>
+    <p>By the time she packed her bag, she felt lighter. The work was not finished, but it had stopped feeling impossible. As she walked home, she thought about how often the hardest part was simply beginning. Once she had a clear title, a few notes and a little space to think, everything else seemed easier to build.</p>
+  `,
+  adult: `
+    <h2>Why Layout Still Matters</h2>
+    <p>Comfortable reading is influenced by more than content alone. Layout, font choice, spacing, contrast and line length can all change how effortful text feels over time. A style that feels clear and calm for one reader may feel visually tiring for another. This is why flexible presentation matters in workplaces, schools, websites and digital forms.</p>
+    <p>Testing small adjustments can help someone identify a format that feels easier to manage in everyday settings such as work, study or home reading. In practice, this often means looking at a fuller page rather than a tiny sample, because headings, <em>emphasis</em>, <strong>important points</strong>, images and tables all change the way a page is experienced.</p>
+  `
 };
 
 function getFriendlyColorName(hex) {
@@ -754,12 +867,29 @@ function toggleCustomTextArea() {
   customTextWrap.style.display = sampleText.value === "custom" ? "block" : "none";
 }
 
+function applySampleDefaults() {
+  if (sampleText.value === "child6") {
+    fontSize.value = 28;
+    lineSpacing.value = 1.8;
+  } else if (sampleText.value === "child9") {
+    fontSize.value = 23;
+    lineSpacing.value = 1.75;
+  } else {
+    fontSize.value = 20;
+    lineSpacing.value = 1.6;
+  }
+}
+
 function updateDisplayedText() {
   if (sampleText.value === "custom") {
-    readingPage.textContent = customText.value.trim() || "Paste your own text above to preview it here.";
+    readingPage.innerHTML = customText.value.trim().replace(/\n/g, "<br>") || "<h2>Your own text</h2><p>Paste your own text above to preview it here.</p>";
   } else {
-    readingPage.textContent = sampleTexts[sampleText.value];
+    readingPage.innerHTML = sampleTexts[sampleText.value];
   }
+}
+
+function restoreSampleContent() {
+  updateDisplayedText();
 }
 
 function updateFilters() {
@@ -804,6 +934,56 @@ function setScreenPreset(brightnessValueIn, contrastValueIn) {
   updateFilters();
 }
 
+function toggleEditMode() {
+  isEditing = !isEditing;
+  readingPage.contentEditable = isEditing ? "true" : "false";
+  if (isEditing) {
+    readingPage.focus();
+  }
+}
+
+function insertImage() {
+  const imageUrl = prompt("Paste an image URL here, or leave blank and cancel if you do not want to insert one.");
+  if (!imageUrl) return;
+  const img = document.createElement("img");
+  img.src = imageUrl;
+  img.alt = "Inserted image";
+  readingPage.appendChild(img);
+}
+
+function insertTable() {
+  const rows = parseInt(prompt("How many rows would you like?", "3"), 10);
+  const cols = parseInt(prompt("How many columns would you like?", "3"), 10);
+  if (!rows || !cols || rows < 1 || cols < 1) return;
+
+  const table = document.createElement("table");
+  const thead = document.createElement("thead");
+  const headRow = document.createElement("tr");
+
+  for (let c = 0; c < cols; c++) {
+    const th = document.createElement("th");
+    th.textContent = "Heading " + (c + 1);
+    headRow.appendChild(th);
+  }
+
+  thead.appendChild(headRow);
+  table.appendChild(thead);
+
+  const tbody = document.createElement("tbody");
+  for (let r = 0; r < rows - 1; r++) {
+    const row = document.createElement("tr");
+    for (let c = 0; c < cols; c++) {
+      const td = document.createElement("td");
+      td.textContent = "Cell";
+      row.appendChild(td);
+    }
+    tbody.appendChild(row);
+  }
+
+  table.appendChild(tbody);
+  readingPage.appendChild(table);
+}
+
 function resetViewSettings() {
   fontSelect.value = "Arial";
   fontSize.value = 20;
@@ -821,6 +1001,8 @@ function resetViewSettings() {
 function resetAllViewerSettings() {
   sampleText.value = "general";
   customText.value = "";
+  isEditing = false;
+  readingPage.contentEditable = "false";
   toggleCustomTextArea();
   updateDisplayedText();
   resetViewSettings();
@@ -904,7 +1086,11 @@ function loadSettingsFromTool() {
 
 sampleText.addEventListener("change", () => {
   toggleCustomTextArea();
+  if (sampleText.value !== "custom") {
+    applySampleDefaults();
+  }
   updateDisplayedText();
+  updateViewSettings();
 });
 
 customText.addEventListener("input", () => {
@@ -926,6 +1112,7 @@ contrast.addEventListener("input", updateFilters);
 
 loadSettingsFromTool();
 toggleCustomTextArea();
+applySampleDefaults();
 updateDisplayedText();
 updateViewSettings();
 updateOverlay();
