@@ -39,7 +39,7 @@ body{
   position:fixed;
   inset:0;
   background:#fff8dc;
-  opacity:0.5;
+  opacity:0.1;
   pointer-events:none;
   z-index:999;
 }
@@ -160,16 +160,61 @@ body{
 }
 
 .control-group label{
-  display:block;
+  display:flex;
+  align-items:center;
+  gap:8px;
   margin-bottom:8px;
   font-weight:700;
   font-size:17px;
+  position:relative;
 }
 
 .control-value{
   margin-left:8px;
   color:var(--muted);
   font-weight:400;
+}
+
+.help-tip{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:20px;
+  height:20px;
+  min-width:20px;
+  border-radius:50%;
+  background:#e9eefb;
+  color:#23376f;
+  font-size:13px;
+  font-weight:700;
+  cursor:help;
+  line-height:1;
+}
+
+.help-tip::after{
+  content:attr(data-tip);
+  position:absolute;
+  left:28px;
+  top:50%;
+  transform:translateY(-50%);
+  width:240px;
+  background:#23376f;
+  color:#ffffff;
+  padding:10px 12px;
+  border-radius:10px;
+  font-size:13px;
+  font-weight:400;
+  line-height:1.45;
+  box-shadow:0 10px 24px rgba(0,0,0,0.16);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.15s ease;
+  z-index:2000;
+}
+
+.help-tip:hover::after{
+  opacity:1;
 }
 
 select,
@@ -208,16 +253,12 @@ input[type="range"]{
   box-shadow:0 4px 10px rgba(0,0,0,0.08);
 }
 
-.color-picker-tip{
-  font-size:15px;
+.color-name{
+  display:inline-block;
+  margin-top:4px;
+  font-size:14px;
   color:var(--muted);
-  line-height:1.5;
-}
-
-.color-picker-tip strong{
-  display:block;
-  color:var(--text);
-  font-size:15px;
+  font-weight:700;
 }
 
 #customTextWrap{
@@ -261,11 +302,6 @@ input[type="range"]{
 
 .overlay-preset:hover{
   transform:translateY(-1px);
-}
-
-.reset-preset{
-  background:#e9eefb !important;
-  color:#23376f;
 }
 
 .actions{
@@ -356,6 +392,12 @@ button:hover{
   font-size:18px;
 }
 
+.bottom-reset{
+  margin-top:18px;
+  display:flex;
+  justify-content:center;
+}
+
 .site-footer{
   max-width:1400px;
   margin:0 auto;
@@ -419,6 +461,17 @@ button:hover{
     align-items:flex-start;
     flex-direction:column;
   }
+
+  .bottom-reset{
+    justify-content:stretch;
+  }
+
+  .help-tip::after{
+    left:0;
+    top:28px;
+    transform:none;
+    width:220px;
+  }
 }
 </style>
 </head>
@@ -456,7 +509,10 @@ button:hover{
 
           <div class="controls-grid">
             <div class="control-group">
-              <label for="sampleText">Text source</label>
+              <label for="sampleText">
+                Text source
+                <span class="help-tip" data-tip="Choose a sample passage, or select 'My own text' to paste in your own writing.">?</span>
+              </label>
               <select id="sampleText">
                 <option value="general">General reading sample</option>
                 <option value="child">Children’s story</option>
@@ -480,7 +536,10 @@ button:hover{
           <div class="controls-grid">
 
             <div class="control-group">
-              <label for="fontSelect">Font</label>
+              <label for="fontSelect">
+                Font
+                <span class="help-tip" data-tip="Choose the font family used for the reading preview. Different fonts can feel very different to read.">?</span>
+              </label>
               <select id="fontSelect">
                 <option>Arial</option>
                 <option>Verdana</option>
@@ -499,90 +558,99 @@ button:hover{
             </div>
 
             <div class="control-group">
-              <label for="fontSize">Font size <span class="control-value" id="fontSizeValue">20px</span></label>
+              <label for="fontSize">
+                Font size <span class="control-value" id="fontSizeValue">20px</span>
+                <span class="help-tip" data-tip="Use this slider to make the text larger or smaller.">?</span>
+              </label>
               <input type="range" id="fontSize" min="16" max="36" value="20">
             </div>
 
             <div class="control-group">
-              <label for="lineSpacing">Line spacing <span class="control-value" id="lineSpacingValue">1.6</span></label>
+              <label for="lineSpacing">
+                Line spacing <span class="control-value" id="lineSpacingValue">1.6</span>
+                <span class="help-tip" data-tip="Use this slider to increase or reduce the space between lines of text.">?</span>
+              </label>
               <input type="range" id="lineSpacing" min="1.2" max="2" step="0.1" value="1.6">
             </div>
 
             <div class="control-group">
-              <label for="pageWidth">Page width <span class="control-value" id="pageWidthValue">100%</span></label>
+              <label for="pageWidth">
+                Page width <span class="control-value" id="pageWidthValue">100%</span>
+                <span class="help-tip" data-tip="Use this slider to make the reading area narrower or wider. Narrower lines may feel easier to track for some readers.">?</span>
+              </label>
               <input type="range" id="pageWidth" min="60" max="100" step="5" value="100">
             </div>
 
             <div class="control-group">
-              <label>Text colour</label>
+              <label>
+                Text colour <span class="color-name" id="textColorName">Dark grey</span>
+                <span class="help-tip" data-tip="Click the colour square to choose a text colour.">?</span>
+              </label>
               <div class="color-picker-wrap">
                 <input type="color" id="textColor" value="#333333">
-                <div class="color-picker-tip">
-                  <strong>Click the colour box</strong>
-                  to open more colour choices.
-                </div>
               </div>
             </div>
 
             <div class="control-group">
-              <label>Reading page colour</label>
+              <label>
+                Reading page colour <span class="color-name" id="bgColorName">Cream</span>
+                <span class="help-tip" data-tip="Click the colour square to choose the background colour of the reading panel.">?</span>
+              </label>
               <div class="color-picker-wrap">
                 <input type="color" id="bgColor" value="#fff8dc">
-                <div class="color-picker-tip">
-                  <strong>Click the colour box</strong>
-                  to choose the page background colour.
-                </div>
               </div>
             </div>
 
             <div class="control-group">
-              <label>Whole-screen overlay colour</label>
+              <label>
+                Whole-screen overlay colour <span class="color-name" id="overlayColorName">Cream</span>
+                <span class="help-tip" data-tip="Click the colour square to choose a tint for the whole visible screen.">?</span>
+              </label>
               <div class="color-picker-wrap">
                 <input type="color" id="overlayColor" value="#fff8dc">
-                <div class="color-picker-tip">
-                  <strong>Click the colour box</strong>
-                  to tint the whole visible screen.
-                </div>
               </div>
             </div>
 
             <div class="control-group">
-              <label for="overlayStrength">Overlay strength <span class="control-value" id="overlayStrengthValue">50%</span></label>
-              <input type="range" id="overlayStrength" min="0" max="100" value="50">
+              <label for="overlayStrength">
+                Overlay strength <span class="control-value" id="overlayStrengthValue">10%</span>
+                <span class="help-tip" data-tip="Use this slider to make the whole-screen tint lighter or stronger.">?</span>
+              </label>
+              <input type="range" id="overlayStrength" min="0" max="100" value="10">
             </div>
 
             <div class="control-group">
-              <label for="brightness">Screen brightness <span class="control-value" id="brightnessValue">100%</span></label>
+              <label for="brightness">
+                Screen brightness <span class="control-value" id="brightnessValue">100%</span>
+                <span class="help-tip" data-tip="Use this slider to reduce or increase overall screen brightness.">?</span>
+              </label>
               <input type="range" id="brightness" min="60" max="140" value="100">
             </div>
 
             <div class="control-group">
-              <label for="contrast">Screen contrast <span class="control-value" id="contrastValue">100%</span></label>
+              <label for="contrast">
+                Screen contrast <span class="control-value" id="contrastValue">100%</span>
+                <span class="help-tip" data-tip="Use this slider to soften or sharpen contrast across the whole page.">?</span>
+              </label>
               <input type="range" id="contrast" min="60" max="140" value="100">
             </div>
 
           </div>
 
           <div class="preset-row">
-            <button type="button" class="overlay-preset" style="background:#fff8dc;" onclick="setOverlayPreset('#fff8dc', 50)">Cream overlay</button>
-            <button type="button" class="overlay-preset" style="background:#f0f7ff;" onclick="setOverlayPreset('#f0f7ff', 50)">Soft blue overlay</button>
-            <button type="button" class="overlay-preset" style="background:#eef7f3;" onclick="setOverlayPreset('#eef7f3', 50)">Pale green overlay</button>
-            <button type="button" class="overlay-preset" style="background:#f3f3f3;" onclick="setOverlayPreset('#f3f3f3', 45)">Light grey overlay</button>
-            <button type="button" class="overlay-preset" style="background:#fff5f5;" onclick="setOverlayPreset('#fff5f5', 45)">Soft pink overlay</button>
-            <button type="button" class="overlay-preset reset-preset" onclick="setOverlayPreset('#fff8dc', 0)">No overlay</button>
+            <button type="button" class="overlay-preset" style="background:#fff8dc;" onclick="setOverlayPreset('#fff8dc', 25)">Cream overlay</button>
+            <button type="button" class="overlay-preset" style="background:#f0f7ff;" onclick="setOverlayPreset('#f0f7ff', 25)">Soft blue overlay</button>
+            <button type="button" class="overlay-preset" style="background:#eef7f3;" onclick="setOverlayPreset('#eef7f3', 25)">Pale green overlay</button>
+            <button type="button" class="overlay-preset" style="background:#f3f3f3;" onclick="setOverlayPreset('#f3f3f3', 20)">Light grey overlay</button>
+            <button type="button" class="overlay-preset" style="background:#fff5f5;" onclick="setOverlayPreset('#fff5f5', 20)">Soft pink overlay</button>
+            <button type="button" class="overlay-preset" style="background:#ffffff;" onclick="setOverlayPreset('#ffffff', 0)">No overlay</button>
           </div>
 
           <div class="preset-row">
-            <button type="button" class="overlay-preset reset-preset" onclick="setScreenPreset(90, 90)">Low glare</button>
-            <button type="button" class="overlay-preset reset-preset" onclick="setScreenPreset(95, 85)">Soft contrast</button>
-            <button type="button" class="overlay-preset reset-preset" onclick="setScreenPreset(110, 100)">Brighter screen</button>
-            <button type="button" class="overlay-preset reset-preset" onclick="setScreenPreset(100, 115)">Higher contrast</button>
-            <button type="button" class="overlay-preset reset-preset" onclick="setScreenPreset(100, 100)">Reset screen</button>
-          </div>
-
-          <div class="actions">
-            <button onclick="resetViewSettings()">Reset view settings</button>
-            <button class="secondary" onclick="resetAllViewerSettings()">Reset everything</button>
+            <button type="button" class="overlay-preset" style="background:#e9eefb;" onclick="setScreenPreset(90, 90)">Low glare</button>
+            <button type="button" class="overlay-preset" style="background:#e9eefb;" onclick="setScreenPreset(95, 85)">Soft contrast</button>
+            <button type="button" class="overlay-preset" style="background:#e9eefb;" onclick="setScreenPreset(110, 100)">Brighter screen</button>
+            <button type="button" class="overlay-preset" style="background:#e9eefb;" onclick="setScreenPreset(100, 115)">Higher contrast</button>
           </div>
         </section>
 
@@ -604,6 +672,10 @@ button:hover{
         </div>
 
         <div id="viewerProfileBox" class="profileBox"></div>
+
+        <div class="bottom-reset">
+          <button class="secondary" onclick="resetAllViewerSettings()">Reset Reading View</button>
+        </div>
       </section>
 
     </div>
@@ -643,6 +715,10 @@ const overlayStrengthValue = document.getElementById("overlayStrengthValue");
 const brightnessValue = document.getElementById("brightnessValue");
 const contrastValue = document.getElementById("contrastValue");
 
+const textColorName = document.getElementById("textColorName");
+const bgColorName = document.getElementById("bgColorName");
+const overlayColorName = document.getElementById("overlayColorName");
+
 let lastViewerProfileText = "";
 
 const sampleTexts = {
@@ -651,6 +727,28 @@ const sampleTexts = {
   teen: "Maya had not planned to stay late after school, but the library was quiet and she needed somewhere calm to think. She opened her notebook, read over her ideas and realised that the project finally made sense. What had felt messy in her head now looked more manageable on the page. She changed the heading, moved a few paragraphs around and kept going. By the time she packed her bag, she felt lighter. Sometimes the hardest part was simply finding a way to begin.",
   adult: "Comfortable reading is influenced by more than content alone. Layout, font choice, spacing, contrast and line length can all change how effortful text feels over time. A style that feels clear and calm for one reader may feel visually tiring for another. This is why flexible presentation matters. Testing small adjustments can help someone identify a format that feels easier to manage in everyday settings such as work, study or home reading."
 };
+
+function getFriendlyColorName(hex) {
+  const value = hex.toLowerCase();
+  const known = {
+    "#333333": "Dark grey",
+    "#000000": "Black",
+    "#ffffff": "White",
+    "#fff8dc": "Cream",
+    "#f0f7ff": "Soft blue",
+    "#eef7f3": "Pale green",
+    "#f3f3f3": "Light grey",
+    "#fff5f5": "Soft pink",
+    "#222222": "Charcoal"
+  };
+  return known[value] || "Custom colour";
+}
+
+function updateColorNames() {
+  textColorName.textContent = getFriendlyColorName(textColor.value);
+  bgColorName.textContent = getFriendlyColorName(bgColor.value);
+  overlayColorName.textContent = getFriendlyColorName(overlayColor.value);
+}
 
 function toggleCustomTextArea() {
   customTextWrap.style.display = sampleText.value === "custom" ? "block" : "none";
@@ -674,6 +772,7 @@ function updateOverlay() {
   screenOverlay.style.backgroundColor = overlayColor.value;
   screenOverlay.style.opacity = (overlayStrength.value / 100).toString();
   overlayStrengthValue.textContent = overlayStrength.value + "%";
+  updateColorNames();
 }
 
 function updateViewSettings() {
@@ -688,6 +787,7 @@ function updateViewSettings() {
   lineSpacingValue.textContent = lineSpacing.value;
   pageWidthValue.textContent = pageWidth.value + "%";
 
+  updateColorNames();
   updateOverlay();
   updateFilters();
 }
@@ -712,7 +812,7 @@ function resetViewSettings() {
   textColor.value = "#333333";
   bgColor.value = "#fff8dc";
   overlayColor.value = "#fff8dc";
-  overlayStrength.value = 50;
+  overlayStrength.value = 10;
   brightness.value = 100;
   contrast.value = 100;
   updateViewSettings();
@@ -737,9 +837,9 @@ function getViewerProfileText() {
     "Font size: " + fontSize.value + "px\n" +
     "Line spacing: " + lineSpacing.value + "\n" +
     "Page width: " + pageWidth.value + "%\n" +
-    "Text colour: " + textColor.value + "\n" +
-    "Reading page colour: " + bgColor.value + "\n" +
-    "Whole-screen overlay colour: " + overlayColor.value + "\n" +
+    "Text colour: " + textColor.value + " (" + getFriendlyColorName(textColor.value) + ")\n" +
+    "Reading page colour: " + bgColor.value + " (" + getFriendlyColorName(bgColor.value) + ")\n" +
+    "Whole-screen overlay colour: " + overlayColor.value + " (" + getFriendlyColorName(overlayColor.value) + ")\n" +
     "Overlay strength: " + overlayStrength.value + "%\n" +
     "Screen brightness: " + brightness.value + "%\n" +
     "Screen contrast: " + contrast.value + "%\n\n" +
@@ -758,9 +858,9 @@ function generateViewerProfile() {
     "<strong>Font size:</strong> " + fontSize.value + "px<br>" +
     "<strong>Line spacing:</strong> " + lineSpacing.value + "<br>" +
     "<strong>Page width:</strong> " + pageWidth.value + "%<br>" +
-    "<strong>Text colour:</strong> " + textColor.value + "<br>" +
-    "<strong>Reading page colour:</strong> " + bgColor.value + "<br>" +
-    "<strong>Whole-screen overlay colour:</strong> " + overlayColor.value + "<br>" +
+    "<strong>Text colour:</strong> " + getFriendlyColorName(textColor.value) + " (" + textColor.value + ")<br>" +
+    "<strong>Reading page colour:</strong> " + getFriendlyColorName(bgColor.value) + " (" + bgColor.value + ")<br>" +
+    "<strong>Whole-screen overlay colour:</strong> " + getFriendlyColorName(overlayColor.value) + " (" + overlayColor.value + ")<br>" +
     "<strong>Overlay strength:</strong> " + overlayStrength.value + "%<br>" +
     "<strong>Screen brightness:</strong> " + brightness.value + "%<br>" +
     "<strong>Screen contrast:</strong> " + contrast.value + "%" +
@@ -829,6 +929,7 @@ toggleCustomTextArea();
 updateDisplayedText();
 updateViewSettings();
 updateOverlay();
+updateColorNames();
 </script>
 
 </body>
