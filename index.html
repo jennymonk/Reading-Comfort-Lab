@@ -1,558 +1,406 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reading Comfort Tool</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reading Comfort Lab</title>
+  <style>
+    :root{
+      --bg:#f5f6f8;
+      --card:#ffffff;
+      --text:#222222;
+      --muted:#4b5563;
+      --accent:#3657d6;
+      --accent2:#eef3ff;
+      --soft:#f8fafc;
+      --border:#d8dee8;
+      --shadow:0 12px 30px rgba(0,0,0,0.08);
+      --max:920px;
+    }
 
-<style>
-:root{
-  --bg:#f4f6f9;
-  --card:#ffffff;
-  --text:#222222;
-  --muted:#4b5563;
-  --accent:#3657d6;
-  --accent-soft:#eef3ff;
-  --border:#d8dee8;
-  --shadow:0 12px 30px rgba(0,0,0,0.08);
-}
+    *{
+      box-sizing:border-box;
+    }
 
-*{
-  box-sizing:border-box;
-}
+    html{
+      scroll-behavior:smooth;
+    }
 
-html{
-  scroll-behavior:smooth;
-}
+    body{
+      margin:0;
+      font-family:Arial, Verdana, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.8;
+      font-size:20px;
+    }
 
-body{
-  font-family:Arial, Verdana, sans-serif;
-  background:var(--bg);
-  margin:0;
-  font-size:20px;
-  line-height:1.8;
-  color:var(--text);
-}
+    .site-header{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      background:rgba(245,246,248,0.94);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--border);
+    }
 
-.site-header{
-  position:sticky;
-  top:0;
-  z-index:1000;
-  background:rgba(244,246,249,0.94);
-  backdrop-filter:blur(10px);
-  border-bottom:1px solid var(--border);
-}
+    .nav{
+      max-width:1100px;
+      margin:0 auto;
+      padding:14px 22px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:20px;
+    }
 
-.nav{
-  max-width:1100px;
-  margin:0 auto;
-  padding:14px 22px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:20px;
-}
+    .brand{
+      font-weight:700;
+      font-size:22px;
+      color:var(--text);
+      text-decoration:none;
+    }
 
-.brand{
-  font-weight:700;
-  font-size:22px;
-  color:var(--text);
-  text-decoration:none;
-}
+    .nav-links{
+      display:flex;
+      gap:18px;
+      flex-wrap:wrap;
+    }
 
-.nav-links{
-  display:flex;
-  gap:18px;
-  flex-wrap:wrap;
-}
+    .nav-links a{
+      text-decoration:none;
+      color:var(--muted);
+      font-weight:700;
+      font-size:17px;
+    }
 
-.nav-links a{
-  text-decoration:none;
-  color:var(--muted);
-  font-weight:700;
-  font-size:17px;
-}
+    .nav-links a:hover{
+      color:var(--accent);
+    }
 
-.nav-links a:hover{
-  color:var(--accent);
-}
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:40px 22px 60px;
+    }
 
-.page-wrap{
-  padding:40px 20px 60px;
-}
+    .hero{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      padding:34px 28px;
+      margin-bottom:26px;
+    }
 
-.container{
-  max-width:980px;
-  margin:auto;
-  background:var(--card);
-  padding:40px;
-  border-radius:20px;
-  box-shadow:var(--shadow);
-  border:1px solid var(--border);
-}
+    h1{
+      font-size:44px;
+      line-height:1.15;
+      margin:0 0 18px;
+      letter-spacing:0.2px;
+    }
 
-.backlink{
-  display:inline-block;
-  margin-bottom:24px;
-  text-decoration:none;
-  font-weight:700;
-  color:var(--accent);
-  font-size:18px;
-}
+    h2{
+      font-size:30px;
+      line-height:1.25;
+      margin:0 0 14px;
+    }
 
-h1{
-  font-size:38px;
-  line-height:1.2;
-  margin:0 0 14px 0;
-}
+    p{
+      margin:0 0 18px;
+    }
 
-.intro{
-  color:var(--muted);
-  margin-bottom:30px;
-  max-width:760px;
-}
+    .bio{
+      background:linear-gradient(135deg,#f7f8ff 0%, #eef3ff 100%);
+      border:1px solid #d9e3ff;
+      border-radius:18px;
+      padding:24px;
+      margin-bottom:24px;
+    }
 
-.preset-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
-  gap:16px;
-  margin-bottom:32px;
-}
+    .hero-actions{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-top:18px;
+    }
 
-.preset{
-  padding:24px 18px;
-  border-radius:16px;
-  cursor:pointer;
-  font-weight:700;
-  text-align:center;
-  transition:transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
-  border:2px solid transparent;
-  box-shadow:0 6px 16px rgba(0,0,0,0.05);
-  min-height:110px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
+    .section{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:26px;
+      margin-bottom:22px;
+      box-shadow:0 6px 18px rgba(0,0,0,0.04);
+    }
 
-.preset:hover{
-  transform:translateY(-3px);
-  border-color:#aab7d1;
-  box-shadow:0 12px 22px rgba(0,0,0,0.08);
-}
+    .note{
+      background:#fff8e8;
+      border:1px solid #ead9a8;
+    }
 
-.controls-panel{
-  background:#fbfcfe;
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:24px;
-  margin-bottom:30px;
-}
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      gap:14px;
+      margin-top:10px;
+    }
 
-.controls-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:20px;
-}
+    .mini-card{
+      background:var(--soft);
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:16px 18px;
+      font-size:19px;
+      line-height:1.65;
+    }
 
-.control-group label{
-  display:block;
-  margin-bottom:8px;
-  font-weight:700;
-  font-size:18px;
-}
+    .links{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:14px;
+      margin-top:10px;
+    }
 
-.control-value{
-  display:inline-block;
-  margin-left:8px;
-  color:var(--muted);
-  font-weight:400;
-}
+    .link-card{
+      display:block;
+      text-decoration:none;
+      color:var(--text);
+      background:#fbfcfe;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:18px;
+      transition:transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+    }
 
-select,
-input[type="range"],
-input[type="color"]{
-  width:100%;
-}
+    .link-card:hover{
+      transform:translateY(-2px);
+      box-shadow:0 10px 20px rgba(0,0,0,0.06);
+      border-color:#b9c7df;
+    }
 
-select{
-  padding:10px 12px;
-  font-size:17px;
-  border:1px solid var(--border);
-  border-radius:10px;
-  background:#ffffff;
-}
+    .link-card strong{
+      display:block;
+      font-size:20px;
+      margin-bottom:6px;
+    }
 
-input[type="range"]{
-  accent-color:var(--accent);
-}
+    .link-card span{
+      display:block;
+      color:var(--muted);
+      font-size:18px;
+      line-height:1.6;
+    }
 
-input[type="color"]{
-  height:46px;
-  border:none;
-  background:transparent;
-  padding:0;
-  cursor:pointer;
-}
+    .cta{
+      text-align:center;
+      padding:34px 22px;
+      background:linear-gradient(135deg,#f7f9ff 0%, #eef3ff 100%);
+      border:1px solid #d9e3ff;
+      border-radius:20px;
+      box-shadow:var(--shadow);
+      margin-top:24px;
+    }
 
-.reading-wrap{
-  display:flex;
-  justify-content:center;
-  margin-top:10px;
-}
+    .cta p{
+      max-width:700px;
+      margin:0 auto 20px;
+    }
 
-#readingText{
-  width:720px;
-  max-width:100%;
-  padding:28px;
-  border-radius:14px;
-  border:1px solid #ddd;
-  font-size:20px;
-  line-height:1.6;
-  background:#fff8dc;
-  color:#333333;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,0.6);
-}
+    .button{
+      display:inline-block;
+      text-decoration:none;
+      background:var(--accent);
+      color:#ffffff;
+      font-weight:700;
+      font-size:22px;
+      padding:16px 28px;
+      border-radius:999px;
+      box-shadow:0 10px 22px rgba(54,87,214,0.25);
+      transition:transform 0.16s ease, box-shadow 0.16s ease;
+    }
 
-.actions{
-  margin-top:24px;
-  display:flex;
-  gap:14px;
-  flex-wrap:wrap;
-}
+    .button:hover{
+      transform:translateY(-2px);
+      box-shadow:0 14px 26px rgba(54,87,214,0.28);
+    }
 
-button{
-  padding:14px 18px;
-  font-size:17px;
-  cursor:pointer;
-  border:none;
-  border-radius:12px;
-  background:var(--accent);
-  color:white;
-  font-weight:700;
-  transition:transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
-  box-shadow:0 10px 22px rgba(54,87,214,0.22);
-}
+    .button.secondary{
+      background:#ffffff;
+      color:var(--accent);
+      border:1px solid #d9e3ff;
+      box-shadow:none;
+    }
 
-button:hover{
-  background:#2e47b8;
-  transform:translateY(-1px);
-}
+    .button.secondary:hover{
+      box-shadow:0 8px 18px rgba(0,0,0,0.06);
+    }
 
-.secondary{
-  background:#e9eefb;
-  color:#23376f;
-  box-shadow:none;
-}
+    .scroll-indicator{
+      text-align:center;
+      margin-top:28px;
+      color:#6b7280;
+      font-size:18px;
+      animation:floatArrow 1.8s ease-in-out infinite;
+    }
 
-.secondary:hover{
-  background:#dde6fb;
-}
+    @keyframes floatArrow{
+      0%{transform:translateY(0);}
+      50%{transform:translateY(6px);}
+      100%{transform:translateY(0);}
+    }
 
-.profileBox{
-  margin-top:24px;
-  padding:22px;
-  background:var(--accent-soft);
-  border:1px solid #d8e3ff;
-  border-radius:16px;
-  display:none;
-}
+    .small{
+      color:var(--muted);
+      font-size:17px;
+      line-height:1.7;
+    }
 
-.profileBox h2{
-  font-size:24px;
-  margin:0 0 14px 0;
-}
+    .site-footer{
+      max-width:1100px;
+      margin:0 auto;
+      padding:10px 22px 40px;
+      color:var(--muted);
+      font-size:16px;
+      text-align:center;
+    }
 
-.profileBox p{
-  margin:0 0 10px 0;
-}
+    @media (max-width:700px){
+      body{
+        font-size:18px;
+      }
 
-.profile-summary{
-  background:#ffffff;
-  border:1px solid #d6def3;
-  border-radius:12px;
-  padding:16px;
-  margin-top:14px;
-  line-height:1.8;
-}
+      h1{
+        font-size:34px;
+      }
 
-.small-note{
-  color:var(--muted);
-  font-size:17px;
-  margin-top:14px;
-}
+      h2{
+        font-size:26px;
+      }
 
-.site-footer{
-  max-width:1100px;
-  margin:0 auto;
-  padding:10px 22px 40px;
-  color:var(--muted);
-  font-size:16px;
-  text-align:center;
-}
+      .button{
+        font-size:20px;
+        width:100%;
+        max-width:360px;
+        text-align:center;
+      }
 
-@media (max-width:700px){
-  body{
-    font-size:18px;
-  }
+      .nav{
+        align-items:flex-start;
+        flex-direction:column;
+      }
 
-  .nav{
-    align-items:flex-start;
-    flex-direction:column;
-  }
-
-  .nav-links{
-    gap:14px;
-  }
-
-  .page-wrap{
-    padding:20px 14px 40px;
-  }
-
-  .container{
-    padding:24px 18px;
-  }
-
-  h1{
-    font-size:32px;
-  }
-
-  #readingText{
-    font-size:18px;
-    padding:22px;
-  }
-
-  button{
-    width:100%;
-  }
-}
-</style>
+      .nav-links{
+        gap:14px;
+      }
+    }
+  </style>
 </head>
-
 <body>
 
-<header class="site-header">
-  <nav class="nav">
-    <a href="index.html" class="brand">Reading Comfort Lab</a>
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="tool.html">Tool</a>
-      <a href="index.html#about">About</a>
-      <a href="index.html#help">Further help</a>
-    </div>
-  </nav>
-</header>
-
-<div class="page-wrap">
-  <div class="container">
-
-    <a href="index.html" class="backlink">← Back to Reading Comfort Lab</a>
-
-    <h1>Reading Comfort Tool</h1>
-
-    <p class="intro">
-      Use the controls below to explore different fonts, spacing, colours and line widths. The aim is not to find a universal best setting, but to discover what feels most comfortable for you.
-    </p>
-
-    <div class="preset-grid">
-      <div class="preset" style="background:#fff8dc" onclick="applyPreset('Arial',20,1.6,'#333333','#fff8dc',720)">Classic Calm</div>
-      <div class="preset" style="background:#f0f7ff" onclick="applyPreset('Verdana',20,1.7,'#222222','#f0f7ff',700)">Wide & Clear</div>
-      <div class="preset" style="background:#f3f3f3" onclick="applyPreset('Segoe UI',20,1.6,'#333333','#f3f3f3',740)">Soft Contrast</div>
-      <div class="preset" style="background:#fff5f5" onclick="applyPreset('Georgia',20,1.7,'#222222','#fff5f5',680)">Book Style</div>
-      <div class="preset" style="background:#eef7f3" onclick="applyPreset('Tahoma',20,1.6,'#222222','#eef7f3',760)">Screen Easy</div>
-    </div>
-
-    <div class="controls-panel">
-      <div class="controls-grid">
-
-        <div class="control-group">
-          <label for="fontSelect">Font</label>
-          <select id="fontSelect">
-            <option>Arial</option>
-            <option>Verdana</option>
-            <option>Tahoma</option>
-            <option>Trebuchet MS</option>
-            <option>Calibri</option>
-            <option>Segoe UI</option>
-            <option>Bahnschrift</option>
-            <option>Candara</option>
-            <option>Georgia</option>
-            <option>Cambria</option>
-            <option>Constantia</option>
-            <option>Palatino Linotype</option>
-            <option>Times New Roman</option>
-          </select>
-        </div>
-
-        <div class="control-group">
-          <label for="fontSize">Font size <span class="control-value" id="fontSizeValue">20px</span></label>
-          <input type="range" id="fontSize" min="16" max="36" value="20">
-        </div>
-
-        <div class="control-group">
-          <label for="lineSpacing">Line spacing <span class="control-value" id="lineSpacingValue">1.6</span></label>
-          <input type="range" id="lineSpacing" min="1.2" max="2" step="0.1" value="1.6">
-        </div>
-
-        <div class="control-group">
-          <label for="lineWidth">Line width <span class="control-value" id="lineWidthValue">720px</span></label>
-          <input type="range" id="lineWidth" min="480" max="900" step="20" value="720">
-        </div>
-
-        <div class="control-group">
-          <label for="textColor">Text colour</label>
-          <input type="color" id="textColor" value="#333333">
-        </div>
-
-        <div class="control-group">
-          <label for="bgColor">Background colour</label>
-          <input type="color" id="bgColor" value="#fff8dc">
-        </div>
-
+  <header class="site-header">
+    <nav class="nav">
+      <a href="index.html" class="brand">Reading Comfort Lab</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="tool.html">Tool</a>
+        <a href="#about">About</a>
+        <a href="#help">Further help</a>
       </div>
-    </div>
+    </nav>
+  </header>
 
-    <div class="reading-wrap">
-      <div id="readingText">
-        Reading is a highly individual experience. The way text is presented can influence how comfortable it feels to read for extended periods. Some readers prefer wider spacing between lines, while others find certain fonts easier to follow. Background colour and contrast can also affect visual comfort. Line width can matter too. Some people prefer shorter lines that feel easier to track, while others prefer a wider reading area. Use the controls above to experiment with different settings and discover what works best for you.
+  <div class="wrap">
+
+    <section class="hero" id="about">
+      <div class="bio">
+        <h1>Reading Comfort Lab</h1>
+        <p><strong>Hello, I’m Jenny Monkhouse.</strong> I created Reading Comfort Lab because I experience visual strain myself and found it surprisingly hard to locate one straightforward place where I could test different fonts, spacing and background colours together.</p>
+        <p>There is a lot of helpful information online about dyslexia, visual stress, accessibility and readable design. What I struggled to find was a practical one-stop space where I could simply try different combinations and decide what felt best for me. This project grew from that gap.</p>
+        <p>It is designed as a calm, user-led tool to help people explore reading comfort in a simple and practical way.</p>
+
+        <div class="hero-actions">
+          <a href="tool.html" class="button">Try the Reading Comfort Tool</a>
+          <a href="#help" class="button secondary">Find further help</a>
+        </div>
       </div>
-    </div>
 
-    <div class="actions">
-      <button onclick="generateProfile()">Generate my reading profile</button>
-      <button class="secondary" onclick="copyProfile()">Copy profile text</button>
-    </div>
+      <p>Reading comfort is about how easy, tiring, clear or visually manageable text feels to read. Small changes in presentation can make a noticeable difference. A font that feels fine for one person may feel crowded or tiring for someone else. The same is true for spacing, contrast and background colour.</p>
+      <p>This site does not assume there is one perfect reading style. It is here to help you explore what works best for you.</p>
 
-    <div id="profileBox" class="profileBox"></div>
+      <div class="scroll-indicator">
+        ↓ Scroll to learn more ↓
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>What can affect reading comfort?</h2>
+      <p>Reading comfort can be shaped by lots of different things. Some are to do with the text itself, while others are about the person reading it or the environment around them.</p>
+
+      <div class="grid">
+        <div class="mini-card"><strong>Typography and layout</strong><br>Font style, font size, line spacing, paragraph spacing and line length can all change how easy text feels to track.</div>
+        <div class="mini-card"><strong>Colour and contrast</strong><br>Some people prefer softer contrast or a tinted background rather than dark text on a bright white screen.</div>
+        <div class="mini-card"><strong>Light and screen conditions</strong><br>Glare, brightness, reflections and fatigue can make reading feel more effortful.</div>
+        <div class="mini-card"><strong>Individual differences</strong><br>Dyslexia, visual stress, headaches, migraine, concentration, tiredness and personal preference can all shape what feels comfortable.</div>
+      </div>
+    </section>
+
+    <section class="section note">
+      <h2>This is not a diagnostic tool</h2>
+      <p>Reading Comfort Lab is not designed to diagnose dyslexia, visual stress, Irlen syndrome, colour vision differences, migraine-related sensitivity, or any other condition. It is simply a practical tool for exploring combinations of font, spacing and colour.</p>
+      <p>If you regularly experience blurred text, moving words, headaches, glare or marked reading fatigue, it may be worth seeking professional advice as well as experimenting with presentation settings.</p>
+    </section>
+
+    <section class="section" id="help">
+      <h2>Further help and guidance</h2>
+      <p>If you want more information beyond the tool, these organisations and resources are a good place to start.</p>
+
+      <div class="links">
+        <a class="link-card" href="https://www.bdadyslexia.org.uk/dyslexia/about-dyslexia/what-is-dyslexia" target="_blank" rel="noopener noreferrer">
+          <strong>British Dyslexia Association: What is dyslexia?</strong>
+          <span>Clear overview of dyslexia as a specific learning difficulty.</span>
+        </a>
+
+        <a class="link-card" href="https://www.bdadyslexia.org.uk/dyslexia/neurodiversity-and-co-occurring-differences/visual-difficulties" target="_blank" rel="noopener noreferrer">
+          <strong>British Dyslexia Association: Visual difficulties</strong>
+          <span>Information on symptoms such as blurring, moving text and light sensitivity.</span>
+        </a>
+
+        <a class="link-card" href="https://www.nhs.uk/conditions/dyslexia/" target="_blank" rel="noopener noreferrer">
+          <strong>NHS: Dyslexia</strong>
+          <span>General NHS overview, including symptoms, diagnosis and support.</span>
+        </a>
+
+        <a class="link-card" href="https://www.college-optometrists.org/clinical-guidance/guidance/knowledge%2C-skills-and-performance/examining-patients-with-specific-learning-difficul" target="_blank" rel="noopener noreferrer">
+          <strong>College of Optometrists: Visual assessment guidance</strong>
+          <span>Guidance on exploring visual problems through proper eye examination.</span>
+        </a>
+
+        <a class="link-card" href="https://www.college-optometrists.org/clinical-guidance/guidance/knowledge%2C-skills-and-performance/examining-patients-with-specific-learning-difficul/tinted-lenses" target="_blank" rel="noopener noreferrer">
+          <strong>College of Optometrists: Tinted lenses and coloured overlays</strong>
+          <span>Balanced guidance on visual stress, tinted lenses and evidence.</span>
+        </a>
+
+        <a class="link-card" href="https://www.moorfields.nhs.uk/children-and-young-people/paediatric-low-vision-assessment/visual-stress" target="_blank" rel="noopener noreferrer">
+          <strong>Moorfields Eye Hospital: Visual stress</strong>
+          <span>Practical ideas for reducing visual fatigue, glare and strain.</span>
+        </a>
+      </div>
+
+      <p class="small">These links are included for further guidance and do not replace professional assessment where that is needed.</p>
+    </section>
+
+    <section class="cta">
+      <h2>Try the tool</h2>
+      <p>Use the interactive tester to explore different combinations of font, spacing and colour and see which reading style feels most comfortable for you.</p>
+      <a class="button" href="tool.html">Open the Reading Comfort Tool</a>
+    </section>
 
   </div>
-</div>
 
-<footer class="site-footer">
-  Reading Comfort Lab was created to help people explore their own reading preferences in a simple, practical way.
-</footer>
-
-<script>
-const text = document.getElementById("readingText");
-
-const fontSelect = document.getElementById("fontSelect");
-const fontSize = document.getElementById("fontSize");
-const lineSpacing = document.getElementById("lineSpacing");
-const lineWidth = document.getElementById("lineWidth");
-const textColor = document.getElementById("textColor");
-const bgColor = document.getElementById("bgColor");
-
-const fontSizeValue = document.getElementById("fontSizeValue");
-const lineSpacingValue = document.getElementById("lineSpacingValue");
-const lineWidthValue = document.getElementById("lineWidthValue");
-
-let lastProfileText = "";
-
-fontSelect.onchange = function(){
-  text.style.fontFamily = this.value;
-};
-
-fontSize.oninput = function(){
-  text.style.fontSize = this.value + "px";
-  fontSizeValue.textContent = this.value + "px";
-};
-
-lineSpacing.oninput = function(){
-  text.style.lineHeight = this.value;
-  lineSpacingValue.textContent = this.value;
-};
-
-lineWidth.oninput = function(){
-  text.style.width = this.value + "px";
-  lineWidthValue.textContent = this.value + "px";
-};
-
-textColor.oninput = function(){
-  text.style.color = this.value;
-};
-
-bgColor.oninput = function(){
-  text.style.backgroundColor = this.value;
-};
-
-function applyPreset(font, size, line, color, bg, width){
-  text.style.fontFamily = font;
-  text.style.fontSize = size + "px";
-  text.style.lineHeight = line;
-  text.style.color = color;
-  text.style.backgroundColor = bg;
-  text.style.width = width + "px";
-
-  fontSelect.value = font;
-  fontSize.value = size;
-  lineSpacing.value = line;
-  textColor.value = color;
-  bgColor.value = bg;
-  lineWidth.value = width;
-
-  fontSizeValue.textContent = size + "px";
-  lineSpacingValue.textContent = line;
-  lineWidthValue.textContent = width + "px";
-}
-
-function getProfileText(){
-  const font = fontSelect.value;
-  const size = fontSize.value + "px";
-  const spacing = lineSpacing.value;
-  const width = lineWidth.value + "px";
-  const color = textColor.value;
-  const bg = bgColor.value;
-
-  return (
-    "Your Reading Profile\n\n" +
-    "Font: " + font + "\n" +
-    "Font size: " + size + "\n" +
-    "Line spacing: " + spacing + "\n" +
-    "Line width: " + width + "\n" +
-    "Text colour: " + color + "\n" +
-    "Background colour: " + bg + "\n\n" +
-    "You can use these settings in tools like Microsoft Word, Google Docs, or browser reader modes."
-  );
-}
-
-function generateProfile(){
-  const box = document.getElementById("profileBox");
-  const font = fontSelect.value;
-  const size = fontSize.value + "px";
-  const spacing = lineSpacing.value;
-  const width = lineWidth.value + "px";
-  const color = textColor.value;
-  const bg = bgColor.value;
-
-  lastProfileText = getProfileText();
-
-  box.style.display = "block";
-  box.innerHTML =
-    "<h2>Your Reading Profile</h2>" +
-    "<p>This is the combination you have currently selected.</p>" +
-    "<div class='profile-summary'>" +
-    "<strong>Font:</strong> " + font + "<br>" +
-    "<strong>Font size:</strong> " + size + "<br>" +
-    "<strong>Line spacing:</strong> " + spacing + "<br>" +
-    "<strong>Line width:</strong> " + width + "<br>" +
-    "<strong>Text colour:</strong> " + color + "<br>" +
-    "<strong>Background colour:</strong> " + bg +
-    "</div>" +
-    "<p class='small-note'>You can copy these settings into Microsoft Word, Google Docs, browser reader modes, or accessibility preferences on your device.</p>";
-}
-
-async function copyProfile(){
-  if (!lastProfileText) {
-    lastProfileText = getProfileText();
-  }
-
-  try {
-    await navigator.clipboard.writeText(lastProfileText);
-    alert("Your reading profile has been copied.");
-  } catch (err) {
-    alert("Copy did not work in this browser. Please generate the profile and copy it manually.");
-  }
-}
-</script>
+  <footer class="site-footer">
+    Reading Comfort Lab was created to help people explore their own reading preferences in a simple, practical way.
+  </footer>
 
 </body>
 </html>
