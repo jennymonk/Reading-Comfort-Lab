@@ -6,105 +6,254 @@
 <title>Reading Comfort Tool</title>
 
 <style>
+:root{
+  --bg:#f4f6f9;
+  --card:#ffffff;
+  --text:#222222;
+  --muted:#4b5563;
+  --accent:#3657d6;
+  --accent-soft:#eef3ff;
+  --border:#d8dee8;
+  --shadow:0 12px 30px rgba(0,0,0,0.08);
+}
+
+*{
+  box-sizing:border-box;
+}
 
 body{
-font-family:Arial, Verdana, sans-serif;
-background:#f4f6f9;
-margin:0;
-padding:40px;
-font-size:20px;
-line-height:1.8;
+  font-family:Arial, Verdana, sans-serif;
+  background:var(--bg);
+  margin:0;
+  padding:40px 20px;
+  font-size:20px;
+  line-height:1.8;
+  color:var(--text);
 }
 
 .container{
-max-width:900px;
-margin:auto;
-background:white;
-padding:40px;
-border-radius:12px;
-box-shadow:0 12px 30px rgba(0,0,0,0.08);
-}
-
-h1{
-font-size:36px;
-margin-top:0;
+  max-width:980px;
+  margin:auto;
+  background:var(--card);
+  padding:40px;
+  border-radius:20px;
+  box-shadow:var(--shadow);
+  border:1px solid var(--border);
 }
 
 .backlink{
-margin-bottom:25px;
-display:inline-block;
-text-decoration:none;
-font-weight:bold;
-color:#3657d6;
+  display:inline-block;
+  margin-bottom:24px;
+  text-decoration:none;
+  font-weight:700;
+  color:var(--accent);
+  font-size:18px;
+}
+
+h1{
+  font-size:38px;
+  line-height:1.2;
+  margin:0 0 14px 0;
 }
 
 .intro{
-color:#444;
-margin-bottom:30px;
+  color:var(--muted);
+  margin-bottom:30px;
+  max-width:760px;
 }
 
 .preset-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-gap:15px;
-margin-bottom:30px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+  gap:16px;
+  margin-bottom:32px;
 }
 
 .preset{
-padding:22px;
-border-radius:8px;
-cursor:pointer;
-font-weight:bold;
-text-align:center;
-transition:0.2s;
-border:2px solid transparent;
+  padding:24px 18px;
+  border-radius:16px;
+  cursor:pointer;
+  font-weight:700;
+  text-align:center;
+  transition:transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  border:2px solid transparent;
+  box-shadow:0 6px 16px rgba(0,0,0,0.05);
+  min-height:110px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
 .preset:hover{
-transform:scale(1.05);
-border-color:#888;
+  transform:translateY(-3px);
+  border-color:#aab7d1;
+  box-shadow:0 12px 22px rgba(0,0,0,0.08);
 }
 
-.controls label{
-display:block;
-margin-top:16px;
-font-weight:bold;
+.controls-panel{
+  background:#fbfcfe;
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:24px;
+  margin-bottom:30px;
+}
+
+.controls-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+}
+
+.control-group label{
+  display:block;
+  margin-bottom:8px;
+  font-weight:700;
+  font-size:18px;
+}
+
+.control-value{
+  display:inline-block;
+  margin-left:8px;
+  color:var(--muted);
+  font-weight:400;
+}
+
+select,
+input[type="range"],
+input[type="color"]{
+  width:100%;
+}
+
+select{
+  padding:10px 12px;
+  font-size:17px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:#ffffff;
+}
+
+input[type="range"]{
+  accent-color:var(--accent);
+}
+
+input[type="color"]{
+  height:46px;
+  border:none;
+  background:transparent;
+  padding:0;
+  cursor:pointer;
+}
+
+.reading-wrap{
+  display:flex;
+  justify-content:center;
+  margin-top:10px;
 }
 
 #readingText{
-margin-top:30px;
-padding:26px;
-border-radius:6px;
-border:1px solid #ddd;
-font-size:20px;
-line-height:1.6;
-background:#fff8dc;
-color:#333;
+  width:720px;
+  max-width:100%;
+  padding:28px;
+  border-radius:14px;
+  border:1px solid #ddd;
+  font-size:20px;
+  line-height:1.6;
+  background:#fff8dc;
+  color:#333333;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.6);
 }
 
-.profileBox{
-margin-top:25px;
-padding:20px;
-background:#eef3ff;
-border-radius:6px;
-display:none;
+.actions{
+  margin-top:24px;
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
 }
 
 button{
-margin-top:20px;
-padding:12px 18px;
-font-size:16px;
-cursor:pointer;
-border:none;
-background:#3657d6;
-color:white;
-border-radius:6px;
+  padding:14px 18px;
+  font-size:17px;
+  cursor:pointer;
+  border:none;
+  border-radius:12px;
+  background:var(--accent);
+  color:white;
+  font-weight:700;
+  transition:transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+  box-shadow:0 10px 22px rgba(54,87,214,0.22);
 }
 
 button:hover{
-background:#2e47b8;
+  background:#2e47b8;
+  transform:translateY(-1px);
 }
 
+.secondary{
+  background:#e9eefb;
+  color:#23376f;
+  box-shadow:none;
+}
+
+.secondary:hover{
+  background:#dde6fb;
+}
+
+.profileBox{
+  margin-top:24px;
+  padding:22px;
+  background:var(--accent-soft);
+  border:1px solid #d8e3ff;
+  border-radius:16px;
+  display:none;
+}
+
+.profileBox h2{
+  font-size:24px;
+  margin:0 0 14px 0;
+}
+
+.profileBox p{
+  margin:0 0 10px 0;
+}
+
+.profile-summary{
+  background:#ffffff;
+  border:1px solid #d6def3;
+  border-radius:12px;
+  padding:16px;
+  margin-top:14px;
+  line-height:1.8;
+}
+
+.small-note{
+  color:var(--muted);
+  font-size:17px;
+  margin-top:14px;
+}
+
+@media (max-width:700px){
+  body{
+    font-size:18px;
+    padding:20px 14px;
+  }
+
+  .container{
+    padding:24px 18px;
+  }
+
+  h1{
+    font-size:32px;
+  }
+
+  #readingText{
+    font-size:18px;
+    padding:22px;
+  }
+
+  button{
+    width:100%;
+  }
+}
 </style>
 </head>
 
@@ -117,148 +266,203 @@ background:#2e47b8;
 <h1>Reading Comfort Tool</h1>
 
 <p class="intro">
-Use the controls below to experiment with different fonts, spacing and colour combinations. 
-There is no single correct setting. The aim is simply to explore what feels most comfortable for you.
+Use the controls below to explore different fonts, spacing, colours and line widths. The aim is not to find a universal best setting, but to discover what feels most comfortable for you.
 </p>
 
 <div class="preset-grid">
-
-<div class="preset" style="background:#fff8dc"
-onclick="applyPreset('Arial',20,1.6,'#333','#fff8dc')">
-Classic Calm
+  <div class="preset" style="background:#fff8dc" onclick="applyPreset('Arial',20,1.6,'#333333','#fff8dc',720)">Classic Calm</div>
+  <div class="preset" style="background:#f0f7ff" onclick="applyPreset('Verdana',20,1.7,'#222222','#f0f7ff',700)">Wide & Clear</div>
+  <div class="preset" style="background:#f3f3f3" onclick="applyPreset('Segoe UI',20,1.6,'#333333','#f3f3f3',740)">Soft Contrast</div>
+  <div class="preset" style="background:#fff5f5" onclick="applyPreset('Georgia',20,1.7,'#222222','#fff5f5',680)">Book Style</div>
+  <div class="preset" style="background:#eef7f3" onclick="applyPreset('Tahoma',20,1.6,'#222222','#eef7f3',760)">Screen Easy</div>
 </div>
 
-<div class="preset" style="background:#f0f7ff"
-onclick="applyPreset('Verdana',20,1.7,'#222','#f0f7ff')">
-Wide & Clear
+<div class="controls-panel">
+  <div class="controls-grid">
+
+    <div class="control-group">
+      <label for="fontSelect">Font</label>
+      <select id="fontSelect">
+        <option>Arial</option>
+        <option>Verdana</option>
+        <option>Tahoma</option>
+        <option>Trebuchet MS</option>
+        <option>Calibri</option>
+        <option>Segoe UI</option>
+        <option>Bahnschrift</option>
+        <option>Candara</option>
+        <option>Georgia</option>
+        <option>Cambria</option>
+        <option>Constantia</option>
+        <option>Palatino Linotype</option>
+        <option>Times New Roman</option>
+      </select>
+    </div>
+
+    <div class="control-group">
+      <label for="fontSize">Font size <span class="control-value" id="fontSizeValue">20px</span></label>
+      <input type="range" id="fontSize" min="16" max="36" value="20">
+    </div>
+
+    <div class="control-group">
+      <label for="lineSpacing">Line spacing <span class="control-value" id="lineSpacingValue">1.6</span></label>
+      <input type="range" id="lineSpacing" min="1.2" max="2" step="0.1" value="1.6">
+    </div>
+
+    <div class="control-group">
+      <label for="lineWidth">Line width <span class="control-value" id="lineWidthValue">720px</span></label>
+      <input type="range" id="lineWidth" min="480" max="900" step="20" value="720">
+    </div>
+
+    <div class="control-group">
+      <label for="textColor">Text colour</label>
+      <input type="color" id="textColor" value="#333333">
+    </div>
+
+    <div class="control-group">
+      <label for="bgColor">Background colour</label>
+      <input type="color" id="bgColor" value="#fff8dc">
+    </div>
+
+  </div>
 </div>
 
-<div class="preset" style="background:#f3f3f3"
-onclick="applyPreset('Segoe UI',20,1.6,'#333','#f3f3f3')">
-Soft Contrast
+<div class="reading-wrap">
+  <div id="readingText">
+    Reading is a highly individual experience. The way text is presented can influence how comfortable it feels to read for extended periods. Some readers prefer wider spacing between lines, while others find certain fonts easier to follow. Background colour and contrast can also affect visual comfort. Line width can matter too. Some people prefer shorter lines that feel easier to track, while others prefer a wider reading area. Use the controls above to experiment with different settings and discover what works best for you.
+  </div>
 </div>
 
-<div class="preset" style="background:#fff5f5"
-onclick="applyPreset('Georgia',20,1.7,'#222','#fff5f5')">
-Book Style
+<div class="actions">
+  <button onclick="generateProfile()">Generate my reading profile</button>
+  <button class="secondary" onclick="copyProfile()">Copy profile text</button>
 </div>
-
-<div class="preset" style="background:#eef7f3"
-onclick="applyPreset('Tahoma',20,1.6,'#222','#eef7f3')">
-Screen Easy
-</div>
-
-</div>
-
-<div class="controls">
-
-<label>Font</label>
-
-<select id="fontSelect">
-<option>Arial</option>
-<option>Verdana</option>
-<option>Tahoma</option>
-<option>Trebuchet MS</option>
-<option>Calibri</option>
-<option>Segoe UI</option>
-<option>Bahnschrift</option>
-<option>Candara</option>
-<option>Georgia</option>
-<option>Cambria</option>
-<option>Constantia</option>
-<option>Palatino Linotype</option>
-<option>Times New Roman</option>
-</select>
-
-<label>Font Size</label>
-<input type="range" id="fontSize" min="16" max="36" value="20">
-
-<label>Line Spacing</label>
-<input type="range" id="lineSpacing" min="1.2" max="2" step="0.1" value="1.6">
-
-<label>Text Colour</label>
-<input type="color" id="textColor" value="#333333">
-
-<label>Background Colour</label>
-<input type="color" id="bgColor" value="#fff8dc">
-
-</div>
-
-<div id="readingText">
-
-Reading is a highly individual experience. The way text is presented can influence how comfortable it feels to read for extended periods. Some readers prefer wider spacing between lines, while others find certain fonts easier to follow. Background colour and contrast can also affect visual comfort. Use the controls above to experiment with different settings and discover what works best for you.
-
-</div>
-
-<button onclick="generateProfile()">Generate my reading profile</button>
 
 <div id="profileBox" class="profileBox"></div>
 
 </div>
 
 <script>
+const text = document.getElementById("readingText");
 
-const text=document.getElementById("readingText")
+const fontSelect = document.getElementById("fontSelect");
+const fontSize = document.getElementById("fontSize");
+const lineSpacing = document.getElementById("lineSpacing");
+const lineWidth = document.getElementById("lineWidth");
+const textColor = document.getElementById("textColor");
+const bgColor = document.getElementById("bgColor");
 
-document.getElementById("fontSelect").onchange=function(){
-text.style.fontFamily=this.value
+const fontSizeValue = document.getElementById("fontSizeValue");
+const lineSpacingValue = document.getElementById("lineSpacingValue");
+const lineWidthValue = document.getElementById("lineWidthValue");
+
+let lastProfileText = "";
+
+fontSelect.onchange = function(){
+  text.style.fontFamily = this.value;
+};
+
+fontSize.oninput = function(){
+  text.style.fontSize = this.value + "px";
+  fontSizeValue.textContent = this.value + "px";
+};
+
+lineSpacing.oninput = function(){
+  text.style.lineHeight = this.value;
+  lineSpacingValue.textContent = this.value;
+};
+
+lineWidth.oninput = function(){
+  text.style.width = this.value + "px";
+  lineWidthValue.textContent = this.value + "px";
+};
+
+textColor.oninput = function(){
+  text.style.color = this.value;
+};
+
+bgColor.oninput = function(){
+  text.style.backgroundColor = this.value;
+};
+
+function applyPreset(font, size, line, color, bg, width){
+  text.style.fontFamily = font;
+  text.style.fontSize = size + "px";
+  text.style.lineHeight = line;
+  text.style.color = color;
+  text.style.backgroundColor = bg;
+  text.style.width = width + "px";
+
+  fontSelect.value = font;
+  fontSize.value = size;
+  lineSpacing.value = line;
+  textColor.value = color;
+  bgColor.value = bg;
+  lineWidth.value = width;
+
+  fontSizeValue.textContent = size + "px";
+  lineSpacingValue.textContent = line;
+  lineWidthValue.textContent = width + "px";
 }
 
-document.getElementById("fontSize").oninput=function(){
-text.style.fontSize=this.value+"px"
-}
+function getProfileText(){
+  const font = fontSelect.value;
+  const size = fontSize.value + "px";
+  const spacing = lineSpacing.value;
+  const width = lineWidth.value + "px";
+  const color = textColor.value;
+  const bg = bgColor.value;
 
-document.getElementById("lineSpacing").oninput=function(){
-text.style.lineHeight=this.value
-}
-
-document.getElementById("textColor").oninput=function(){
-text.style.color=this.value
-}
-
-document.getElementById("bgColor").oninput=function(){
-text.style.backgroundColor=this.value
-}
-
-function applyPreset(font,size,line,color,bg){
-
-text.style.fontFamily=font
-text.style.fontSize=size+"px"
-text.style.lineHeight=line
-text.style.color=color
-text.style.backgroundColor=bg
-
-document.getElementById("fontSelect").value=font
-document.getElementById("fontSize").value=size
-document.getElementById("lineSpacing").value=line
-document.getElementById("textColor").value=color
-document.getElementById("bgColor").value=bg
-
+  return (
+    "Your Reading Profile\n\n" +
+    "Font: " + font + "\n" +
+    "Font size: " + size + "\n" +
+    "Line spacing: " + spacing + "\n" +
+    "Line width: " + width + "\n" +
+    "Text colour: " + color + "\n" +
+    "Background colour: " + bg + "\n\n" +
+    "You can use these settings in tools like Microsoft Word, Google Docs, or browser reader modes."
+  );
 }
 
 function generateProfile(){
+  const box = document.getElementById("profileBox");
+  const font = fontSelect.value;
+  const size = fontSize.value + "px";
+  const spacing = lineSpacing.value;
+  const width = lineWidth.value + "px";
+  const color = textColor.value;
+  const bg = bgColor.value;
 
-let font=document.getElementById("fontSelect").value
-let size=document.getElementById("fontSize").value
-let spacing=document.getElementById("lineSpacing").value
-let color=document.getElementById("textColor").value
-let bg=document.getElementById("bgColor").value
+  lastProfileText = getProfileText();
 
-let box=document.getElementById("profileBox")
-
-box.style.display="block"
-
-box.innerHTML=
-"<strong>Your Reading Profile</strong><br><br>"+
-"Font: "+font+"<br>"+
-"Font size: "+size+"px<br>"+
-"Line spacing: "+spacing+"<br>"+
-"Text colour: "+color+"<br>"+
-"Background colour: "+bg+"<br><br>"+
-"You can use these settings in tools like Microsoft Word, Google Docs, or browser reader modes."
-
+  box.style.display = "block";
+  box.innerHTML =
+    "<h2>Your Reading Profile</h2>" +
+    "<p>This is the combination you have currently selected.</p>" +
+    "<div class='profile-summary'>" +
+    "<strong>Font:</strong> " + font + "<br>" +
+    "<strong>Font size:</strong> " + size + "<br>" +
+    "<strong>Line spacing:</strong> " + spacing + "<br>" +
+    "<strong>Line width:</strong> " + width + "<br>" +
+    "<strong>Text colour:</strong> " + color + "<br>" +
+    "<strong>Background colour:</strong> " + bg +
+    "</div>" +
+    "<p class='small-note'>You can copy these settings into Microsoft Word, Google Docs, browser reader modes, or accessibility preferences on your device.</p>";
 }
 
+async function copyProfile(){
+  if (!lastProfileText) {
+    lastProfileText = getProfileText();
+  }
+
+  try {
+    await navigator.clipboard.writeText(lastProfileText);
+    alert("Your reading profile has been copied.");
+  } catch (err) {
+    alert("Copy did not work in this browser. Please generate the profile and copy it manually.");
+  }
+}
 </script>
 
 </body>
