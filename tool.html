@@ -21,14 +21,64 @@
   box-sizing:border-box;
 }
 
+html{
+  scroll-behavior:smooth;
+}
+
 body{
   font-family:Arial, Verdana, sans-serif;
   background:var(--bg);
   margin:0;
-  padding:40px 20px;
   font-size:20px;
   line-height:1.8;
   color:var(--text);
+}
+
+.site-header{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:rgba(244,246,249,0.94);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+}
+
+.nav{
+  max-width:1100px;
+  margin:0 auto;
+  padding:14px 22px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+}
+
+.brand{
+  font-weight:700;
+  font-size:22px;
+  color:var(--text);
+  text-decoration:none;
+}
+
+.nav-links{
+  display:flex;
+  gap:18px;
+  flex-wrap:wrap;
+}
+
+.nav-links a{
+  text-decoration:none;
+  color:var(--muted);
+  font-weight:700;
+  font-size:17px;
+}
+
+.nav-links a:hover{
+  color:var(--accent);
+}
+
+.page-wrap{
+  padding:40px 20px 60px;
 }
 
 .container{
@@ -231,10 +281,31 @@ button:hover{
   margin-top:14px;
 }
 
+.site-footer{
+  max-width:1100px;
+  margin:0 auto;
+  padding:10px 22px 40px;
+  color:var(--muted);
+  font-size:16px;
+  text-align:center;
+}
+
 @media (max-width:700px){
   body{
     font-size:18px;
-    padding:20px 14px;
+  }
+
+  .nav{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .nav-links{
+    gap:14px;
+  }
+
+  .page-wrap{
+    padding:20px 14px 40px;
   }
 
   .container{
@@ -259,88 +330,106 @@ button:hover{
 
 <body>
 
-<div class="container">
+<header class="site-header">
+  <nav class="nav">
+    <a href="index.html" class="brand">Reading Comfort Lab</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="tool.html">Tool</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#help">Further help</a>
+    </div>
+  </nav>
+</header>
 
-<a href="index.html" class="backlink">← Back to Reading Comfort Lab</a>
+<div class="page-wrap">
+  <div class="container">
 
-<h1>Reading Comfort Tool</h1>
+    <a href="index.html" class="backlink">← Back to Reading Comfort Lab</a>
 
-<p class="intro">
-Use the controls below to explore different fonts, spacing, colours and line widths. The aim is not to find a universal best setting, but to discover what feels most comfortable for you.
-</p>
+    <h1>Reading Comfort Tool</h1>
 
-<div class="preset-grid">
-  <div class="preset" style="background:#fff8dc" onclick="applyPreset('Arial',20,1.6,'#333333','#fff8dc',720)">Classic Calm</div>
-  <div class="preset" style="background:#f0f7ff" onclick="applyPreset('Verdana',20,1.7,'#222222','#f0f7ff',700)">Wide & Clear</div>
-  <div class="preset" style="background:#f3f3f3" onclick="applyPreset('Segoe UI',20,1.6,'#333333','#f3f3f3',740)">Soft Contrast</div>
-  <div class="preset" style="background:#fff5f5" onclick="applyPreset('Georgia',20,1.7,'#222222','#fff5f5',680)">Book Style</div>
-  <div class="preset" style="background:#eef7f3" onclick="applyPreset('Tahoma',20,1.6,'#222222','#eef7f3',760)">Screen Easy</div>
-</div>
+    <p class="intro">
+      Use the controls below to explore different fonts, spacing, colours and line widths. The aim is not to find a universal best setting, but to discover what feels most comfortable for you.
+    </p>
 
-<div class="controls-panel">
-  <div class="controls-grid">
-
-    <div class="control-group">
-      <label for="fontSelect">Font</label>
-      <select id="fontSelect">
-        <option>Arial</option>
-        <option>Verdana</option>
-        <option>Tahoma</option>
-        <option>Trebuchet MS</option>
-        <option>Calibri</option>
-        <option>Segoe UI</option>
-        <option>Bahnschrift</option>
-        <option>Candara</option>
-        <option>Georgia</option>
-        <option>Cambria</option>
-        <option>Constantia</option>
-        <option>Palatino Linotype</option>
-        <option>Times New Roman</option>
-      </select>
+    <div class="preset-grid">
+      <div class="preset" style="background:#fff8dc" onclick="applyPreset('Arial',20,1.6,'#333333','#fff8dc',720)">Classic Calm</div>
+      <div class="preset" style="background:#f0f7ff" onclick="applyPreset('Verdana',20,1.7,'#222222','#f0f7ff',700)">Wide & Clear</div>
+      <div class="preset" style="background:#f3f3f3" onclick="applyPreset('Segoe UI',20,1.6,'#333333','#f3f3f3',740)">Soft Contrast</div>
+      <div class="preset" style="background:#fff5f5" onclick="applyPreset('Georgia',20,1.7,'#222222','#fff5f5',680)">Book Style</div>
+      <div class="preset" style="background:#eef7f3" onclick="applyPreset('Tahoma',20,1.6,'#222222','#eef7f3',760)">Screen Easy</div>
     </div>
 
-    <div class="control-group">
-      <label for="fontSize">Font size <span class="control-value" id="fontSizeValue">20px</span></label>
-      <input type="range" id="fontSize" min="16" max="36" value="20">
+    <div class="controls-panel">
+      <div class="controls-grid">
+
+        <div class="control-group">
+          <label for="fontSelect">Font</label>
+          <select id="fontSelect">
+            <option>Arial</option>
+            <option>Verdana</option>
+            <option>Tahoma</option>
+            <option>Trebuchet MS</option>
+            <option>Calibri</option>
+            <option>Segoe UI</option>
+            <option>Bahnschrift</option>
+            <option>Candara</option>
+            <option>Georgia</option>
+            <option>Cambria</option>
+            <option>Constantia</option>
+            <option>Palatino Linotype</option>
+            <option>Times New Roman</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="fontSize">Font size <span class="control-value" id="fontSizeValue">20px</span></label>
+          <input type="range" id="fontSize" min="16" max="36" value="20">
+        </div>
+
+        <div class="control-group">
+          <label for="lineSpacing">Line spacing <span class="control-value" id="lineSpacingValue">1.6</span></label>
+          <input type="range" id="lineSpacing" min="1.2" max="2" step="0.1" value="1.6">
+        </div>
+
+        <div class="control-group">
+          <label for="lineWidth">Line width <span class="control-value" id="lineWidthValue">720px</span></label>
+          <input type="range" id="lineWidth" min="480" max="900" step="20" value="720">
+        </div>
+
+        <div class="control-group">
+          <label for="textColor">Text colour</label>
+          <input type="color" id="textColor" value="#333333">
+        </div>
+
+        <div class="control-group">
+          <label for="bgColor">Background colour</label>
+          <input type="color" id="bgColor" value="#fff8dc">
+        </div>
+
+      </div>
     </div>
 
-    <div class="control-group">
-      <label for="lineSpacing">Line spacing <span class="control-value" id="lineSpacingValue">1.6</span></label>
-      <input type="range" id="lineSpacing" min="1.2" max="2" step="0.1" value="1.6">
+    <div class="reading-wrap">
+      <div id="readingText">
+        Reading is a highly individual experience. The way text is presented can influence how comfortable it feels to read for extended periods. Some readers prefer wider spacing between lines, while others find certain fonts easier to follow. Background colour and contrast can also affect visual comfort. Line width can matter too. Some people prefer shorter lines that feel easier to track, while others prefer a wider reading area. Use the controls above to experiment with different settings and discover what works best for you.
+      </div>
     </div>
 
-    <div class="control-group">
-      <label for="lineWidth">Line width <span class="control-value" id="lineWidthValue">720px</span></label>
-      <input type="range" id="lineWidth" min="480" max="900" step="20" value="720">
+    <div class="actions">
+      <button onclick="generateProfile()">Generate my reading profile</button>
+      <button class="secondary" onclick="copyProfile()">Copy profile text</button>
     </div>
 
-    <div class="control-group">
-      <label for="textColor">Text colour</label>
-      <input type="color" id="textColor" value="#333333">
-    </div>
-
-    <div class="control-group">
-      <label for="bgColor">Background colour</label>
-      <input type="color" id="bgColor" value="#fff8dc">
-    </div>
+    <div id="profileBox" class="profileBox"></div>
 
   </div>
 </div>
 
-<div class="reading-wrap">
-  <div id="readingText">
-    Reading is a highly individual experience. The way text is presented can influence how comfortable it feels to read for extended periods. Some readers prefer wider spacing between lines, while others find certain fonts easier to follow. Background colour and contrast can also affect visual comfort. Line width can matter too. Some people prefer shorter lines that feel easier to track, while others prefer a wider reading area. Use the controls above to experiment with different settings and discover what works best for you.
-  </div>
-</div>
-
-<div class="actions">
-  <button onclick="generateProfile()">Generate my reading profile</button>
-  <button class="secondary" onclick="copyProfile()">Copy profile text</button>
-</div>
-
-<div id="profileBox" class="profileBox"></div>
-
-</div>
+<footer class="site-footer">
+  Reading Comfort Lab was created to help people explore their own reading preferences in a simple, practical way.
+</footer>
 
 <script>
 const text = document.getElementById("readingText");
