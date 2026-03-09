@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reading View</title>
+
+<style>
+:root{
+  --bg:#eef2f7;
+  --card:#ffffff;
+  --text:#222222;
+  --muted:#4b5563;
+  --accent:#3657d6;
+  --border:#d8dee8;
+  --shadow:0 12px 30px rgba(0,0,0,0.08);
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  font-family:Arial, Verdana, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  font-size:20px;
+  line-height:1.8;
+}
+
+.site-header{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:rgba(238,242,247,0.95);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+}
+
+.nav{
+  max-width:1200px;
+  margin:0 auto;
+  padding:14px 22px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+}
+
+.brand{
+  font-weight:700;
+  font-size:22px;
+  color:var(--text);
+  text-decoration:none;
+}
+
+.nav-links{
+  display:flex;
+  gap:18px;
+  flex-wrap:wrap;
+}
+
+.nav-links a{
+  text-decoration:none;
+  color:var(--muted);
+  font-weight:700;
+  font-size:17px;
+}
+
+.nav-links a:hover{
+  color:var(--accent);
+}
+
+.page-wrap{
+  max-width:1200px;
+  margin:0 auto;
+  padding:28px 20px 50px;
+}
+
+.intro-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  box-shadow:var(--shadow);
+  padding:24px;
+  margin-bottom:24px;
+}
+
+.intro-card h1{
+  margin:0 0 12px 0;
+  font-size:36px;
+  line-height:1.2;
+}
+
+.intro-card p{
+  margin:0;
+  color:var(--muted);
+}
+
+.controls-panel{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  box-shadow:var(--shadow);
+  padding:24px;
+  margin-bottom:24px;
+}
+
+.controls-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
+}
+
+.control-group label{
+  display:block;
+  margin-bottom:8px;
+  font-weight:700;
+  font-size:18px;
+}
+
+.control-value{
+  margin-left:8px;
+  color:var(--muted);
+  font-weight:400;
+}
+
+select,
+input[type="range"],
+input[type="color"],
+textarea{
+  width:100%;
+}
+
+select{
+  padding:10px 12px;
+  font-size:17px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:#ffffff;
+}
+
+input[type="range"]{
+  accent-color:var(--accent);
+}
+
+input[type="color"]{
+  height:46px;
+  border:none;
+  background:transparent;
+  padding:0;
+  cursor:pointer;
+}
+
+.custom-text-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  box-shadow:var(--shadow);
+  padding:24px;
+  margin-bottom:24px;
+}
+
+.custom-text-card h2{
+  margin:0 0 12px 0;
+  font-size:26px;
+}
+
+.custom-text-card p{
+  margin:0 0 14px 0;
+  color:var(--muted);
+}
+
+#customText{
+  min-height:150px;
+  padding:14px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  font-size:17px;
+  line-height:1.6;
+  resize:vertical;
+}
+
+.actions{
+  margin-top:16px;
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+button{
+  padding:14px 18px;
+  font-size:17px;
+  cursor:pointer;
+  border:none;
+  border-radius:12px;
+  background:var(--accent);
+  color:white;
+  font-weight:700;
+  box-shadow:0 10px 22px rgba(54,87,214,0.22);
+}
+
+button:hover{
+  background:#2e47b8;
+}
+
+.secondary{
+  background:#e9eefb;
+  color:#23376f;
+  box-shadow:none;
+}
+
+.secondary:hover{
+  background:#dde6fb;
+}
+
+.viewer-shell{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  box-shadow:var(--shadow);
+  padding:26px;
+}
+
+.viewer-toolbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+
+.viewer-toolbar h2{
+  margin:0;
+  font-size:26px;
+}
+
+.viewer-note{
+  color:var(--muted);
+  font-size:17px;
+}
+
+#readingPage{
+  width:100%;
+  min-height:70vh;
+  margin:0 auto;
+  padding:48px 56px;
+  border:1px solid #d9d9d9;
+  border-radius:8px;
+  background:#fff8dc;
+  color:#333333;
+  font-size:20px;
+  line-height:1.6;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.6);
+}
+
+.site-footer{
+  max-width:1200px;
+  margin:0 auto;
+  padding:10px 22px 40px;
+  color:var(--muted);
+  font-size:16px;
+  text-align:center;
+}
+
+@media (max-width:700px){
+  body{
+    font-size:18px;
+  }
+
+  .nav{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .nav-links{
+    gap:14px;
+  }
+
+  .page-wrap{
+    padding:18px 14px 36px;
+  }
+
+  .intro-card h1{
+    font-size:30px;
+  }
+
+  #readingPage{
+    padding:28px 22px;
+    min-height:60vh;
+    font-size:18px;
+  }
+
+  button{
+    width:100%;
+  }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a href="index.html" class="brand">Reading Comfort Lab</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="tool.html">Tool</a>
+      <a href="viewer.html">Reading View</a>
+      <a href="index.html#help">Further help</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-wrap">
+
+  <section class="intro-card">
+    <h1>Full Page Reading View</h1>
+    <p>This page lets you view your choices in a more realistic full-page format, similar to how text might feel in a document, website, or reading mode.</p>
+  </section>
+
+  <section class="controls-panel">
+    <div class="controls-grid">
+
+      <div class="control-group">
+        <label for="sampleText">Text sample</label>
+        <select id="sampleText">
+          <option value="general">General reading sample</option>
+          <option value="child">Children’s story</option>
+          <option value="teen">Teen reading sample</option>
+          <option value="adult">Adult information sample</option>
+          <option value="custom">My own text</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label for="fontSelect">Font</label>
+        <select id="fontSelect">
+          <option>Arial</option>
+          <option>Verdana</option>
+          <option>Tahoma</option>
+          <option>Trebuchet MS</option>
+          <option>Calibri</option>
+          <option>Segoe UI</option>
+          <option>Bahnschrift</option>
+          <option>Candara</option>
+          <option>Georgia</option>
+          <option>Cambria</option>
+          <option>Constantia</option>
+          <option>Palatino Linotype</option>
+          <option>Times New Roman</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label for="fontSize">Font size <span class="control-value" id="fontSizeValue">20px</span></label>
+        <input type="range" id="fontSize" min="16" max="36" value="20">
+      </div>
+
+      <div class="control-group">
+        <label for="lineSpacing">Line spacing <span class="control-value" id="lineSpacingValue">1.6</span></label>
+        <input type="range" id="lineSpacing" min="1.2" max="2" step="0.1" value="1.6">
+      </div>
+
+      <div class="control-group">
+        <label for="pageWidth">Page width <span class="control-value" id="pageWidthValue">100%</span></label>
+        <input type="range" id="pageWidth" min="60" max="100" step="5" value="100">
+      </div>
+
+      <div class="control-group">
+        <label for="textColor">Text colour</label>
+        <input type="color" id="textColor" value="#333333">
+      </div>
+
+      <div class="control-group">
+        <label for="bgColor">Background / overlay colour</label>
+        <input type="color" id="bgColor" value="#fff8dc">
+      </div>
+
+    </div>
+  </section>
+
+  <section class="custom-text-card">
+    <h2>Use your own text</h2>
+    <p>Paste text here if you want to see how your own writing, school work, email, or reading material looks with different settings.</p>
+    <textarea id="customText" placeholder="Paste your own text here..."></textarea>
+    <div class="actions">
+      <button onclick="applyCustomText()">Use my text</button>
+      <button class="secondary" onclick="resetSample()">Go back to sample text</button>
+    </div>
+  </section>
+
+  <section class="viewer-shell">
+    <div class="viewer-toolbar">
+      <h2>Reading View</h2>
+      <div class="viewer-note">A larger, document-style view for trying out your settings</div>
+    </div>
+
+    <div id="readingPage">
+      Reading is a highly individual experience. The way text is presented can influence how comfortable it feels to read for extended periods. Some readers prefer wider spacing between lines, while others find certain fonts easier to follow. Background colour and contrast can also affect visual comfort. This page is designed to help you view text in a more realistic, full-page format so you can judge how it feels over time.
+    </div>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  Reading Comfort Lab was created to help people explore their own reading preferences in a simple, practical way.
+</footer>
+
+<script>
+const readingPage = document.getElementById("readingPage");
+const sampleText = document.getElementById("sampleText");
+const fontSelect = document.getElementById("fontSelect");
+const fontSize = document.getElementById("fontSize");
+const lineSpacing = document.getElementById("lineSpacing");
+const pageWidth = document.getElementById("pageWidth");
+const textColor = document.getElementById("textColor");
+const bgColor = document.getElementById("bgColor");
+const customText = document.getElementById("customText");
+
+const fontSizeValue = document.getElementById("fontSizeValue");
+const lineSpacingValue = document.getElementById("lineSpacingValue");
+const pageWidthValue = document.getElementById("pageWidthValue");
+
+const sampleTexts = {
+  general: "Reading is a highly individual experience. The way text is presented can influence how comfortable it feels to read for extended periods. Some readers prefer wider spacing between lines, while others find certain fonts easier to follow. Background colour and contrast can also affect visual comfort. This page is designed to help you view text in a more realistic, full-page format so you can judge how it feels over time.",
+  child: "Ben had a small brown dog called Pip. Every morning, Pip waited by the front door with his tail wagging fast. One sunny day, Ben clipped on Pip’s lead and they walked to the park. Pip sniffed the grass, chased a bouncing ball and splashed in a muddy puddle. On the way home, Ben laughed as Pip shook water all over his shoes. Pip looked proud of himself. By the time they got back, both of them were tired, muddy and very happy.",
+  teen: "Maya had not planned to stay late after school, but the library was quiet and she needed somewhere calm to think. She opened her notebook, read over her ideas and realised that the project finally made sense. What had felt messy in her head now looked more manageable on the page. She changed the heading, moved a few paragraphs around and kept going. By the time she packed her bag, she felt lighter. Sometimes the hardest part was simply finding a way to begin.",
+  adult: "Comfortable reading is influenced by more than content alone. Layout, font choice, spacing, contrast and line length can all change how effortful text feels over time. A style that feels clear and calm for one reader may feel visually tiring for another. This is why flexible presentation matters. Testing small adjustments can help someone identify a format that feels easier to manage in everyday settings such as work, study or home reading."
+};
+
+function updateSampleText() {
+  if (sampleText.value === "custom") {
+    readingPage.textContent = customText.value || "Paste your own text above and click 'Use my text'.";
+  } else {
+    readingPage.textContent = sampleTexts[sampleText.value];
+  }
+}
+
+function applyCustomText() {
+  sampleText.value = "custom";
+  readingPage.textContent = customText.value || "Paste your own text above and click 'Use my text'.";
+}
+
+function resetSample() {
+  sampleText.value = "general";
+  updateSampleText();
+}
+
+sampleText.onchange = function() {
+  updateSampleText();
+};
+
+fontSelect.onchange = function() {
+  readingPage.style.fontFamily = this.value;
+};
+
+fontSize.oninput = function() {
+  readingPage.style.fontSize = this.value + "px";
+  fontSizeValue.textContent = this.value + "px";
+};
+
+lineSpacing.oninput = function() {
+  readingPage.style.lineHeight = this.value;
+  lineSpacingValue.textContent = this.value;
+};
+
+pageWidth.oninput = function() {
+  readingPage.style.width = this.value + "%";
+  pageWidthValue.textContent = this.value + "%";
+};
+
+textColor.oninput = function() {
+  readingPage.style.color = this.value;
+};
+
+bgColor.oninput = function() {
+  readingPage.style.backgroundColor = this.value;
+};
+
+updateSampleText();
+readingPage.style.width = "100%";
+</script>
+
+</body>
+</html>
